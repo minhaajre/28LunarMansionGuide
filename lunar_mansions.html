@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>28 Lunar Mansions — Monthly Action Table</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:            #FAF9F6;
+  --surface:       #FFFFFF;
+  --surface-2:     #F3F1EC;
+  --border:        #E8E5DE;
+  --border-strong: #C9C5BB;
+  --text-1:        #1C1814;
+  --text-2:        #6B6560;
+  --text-3:        #A09B95;
+  --accent:        #CC4E1E;
+
+  --c-highest: #0D7A5F;
+  --c-prime:   #1A6B35;
+  --c-good:    #8A5F00;
+  --c-caution: #B04A0A;
+  --c-avoid:   #AA2020;
+  --c-veto:    #7A0F0F;
+
+  --badge-benef-bg:  #F0FAF4; --badge-benef-text: #16623A; --badge-benef-bd: #BAF0CE;
+  --badge-mixed-bg:  #FEF8EC; --badge-mixed-text: #8A5F00; --badge-mixed-bd: #FAD97A;
+  --badge-malef-bg:  #FEF2F2; --badge-malef-text: #AA2020; --badge-malef-bd: #FAC4C4;
+  --badge-worst-bg:  #FEE8E8; --badge-worst-text: #7A0F0F; --badge-worst-bd: #F6AAAA;
+
+  --fire-bg: #FEF3EC; --fire-text: #9A3A00; --fire-bd: #FACFB0;
+  --earth-bg: #F3F7EC; --earth-text: #3D5A1A; --earth-bd: #C2D9A0;
+  --air-bg:  #EEF4FC; --air-text:  #1A4A82; --air-bd:  #AACDED;
+  --water-bg:#EDF5FA; --water-text:#0A5070; --water-bd:#90CCE4;
+
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text-1);
+  min-height: 100vh;
+  padding: 2.5rem 2rem 5rem;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+  margin-bottom: 2rem; padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.header-left h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; }
+.header-left p  { font-size: 13px; color: var(--text-3); }
+.wordmark { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-3); }
+.wordmark-dot { width: 20px; height: 20px; background: var(--accent); border-radius: 50%; opacity: .85; }
+
+/* ── Month nav ── */
+.month-nav {
+  display: flex; align-items: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); overflow: hidden;
+  margin-bottom: 1.75rem; width: fit-content;
+}
+.mnav-btn {
+  background: none; border: none; padding: 9px 16px;
+  cursor: pointer; color: var(--text-2); font-size: 16px;
+  transition: background .12s, color .12s; font-family: inherit; line-height: 1;
+}
+.mnav-btn:hover { background: var(--surface-2); color: var(--text-1); }
+.mnav-label {
+  padding: 9px 20px; font-size: 14px; font-weight: 500;
+  min-width: 160px; text-align: center;
+  border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+}
+
+/* ── Stats ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 1.75rem; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 18px; }
+.stat-label { font-size: 11px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.stat-val   { font-size: 28px; font-weight: 600; }
+.sv-safe  { color: var(--c-prime); }
+.sv-avoid { color: var(--c-avoid); }
+.sv-caution { color: var(--c-good); }
+.sv-veto  { color: var(--c-veto); }
+
+/* ── Filters ── */
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
+.fbtn {
+  font-size: 12px; font-weight: 500; padding: 6px 14px;
+  border-radius: 20px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-2);
+  cursor: pointer; transition: all .12s; font-family: inherit;
+}
+.fbtn:hover  { background: var(--surface-2); border-color: var(--border-strong); color: var(--text-1); }
+.fbtn.active { background: var(--text-1); color: #FFF; border-color: var(--text-1); }
+
+/* ── Search ── */
+.search-wrap { margin-bottom: 1.25rem; }
+.search-wrap input {
+  font-family: inherit; font-size: 13px; padding: 8px 14px;
+  width: 100%; max-width: 300px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text-1); outline: none;
+  transition: border-color .12s, box-shadow .12s;
+}
+.search-wrap input:focus { border-color: var(--border-strong); box-shadow: 0 0 0 3px rgba(28,24,20,.06); }
+.search-wrap input::placeholder { color: var(--text-3); }
+.count-label { font-size: 12px; color: var(--text-3); margin-bottom: 10px; }
+
+/* ── Table ── */
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  font-size: 10px; font-weight: 600; color: var(--text-3);
+  text-align: left; padding: 11px 12px;
+  background: var(--surface-2); border-bottom: 1px solid var(--border);
+  text-transform: uppercase; letter-spacing: .07em; white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background .08s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #FDFCF9; }
+tbody tr.row-veto { background: #FEF9F9; }
+tbody tr.row-veto:hover { background: #FEF5F5; }
+td { padding: 11px 12px; vertical-align: top; }
+
+/* ── Moon Dates cell (col 1) ── */
+.dates-cell { white-space: nowrap; }
+.dates-day { font-size: 15px; font-weight: 600; color: var(--text-1); display: block; line-height: 1.2; }
+.dates-month { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; display: block; margin-top: 1px; }
+.dates-none { font-size: 13px; color: var(--text-3); }
+
+/* ── Mansion cell (col 2) ── */
+.m-header { display: flex; align-items: baseline; gap: 6px; }
+.m-num { font-size: 10px; color: var(--text-3); font-variant-numeric: tabular-nums; font-weight: 500; }
+.m-name { font-weight: 600; font-size: 13px; color: var(--text-1); }
+.m-deg  { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.m-meta { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+.m-letter-row { display: flex; align-items: center; gap: 6px; }
+.arabic-letter {
+  font-size: 18px; line-height: 1; color: var(--accent);
+  font-family: 'Amiri', 'Arabic Typesetting', 'Traditional Arabic', serif;
+  direction: rtl;
+}
+.letter-latin { font-size: 10px; color: var(--text-3); font-weight: 500; letter-spacing: .03em; }
+.divine-name { font-size: 11px; color: var(--text-2); font-style: italic; }
+.divine-name span { color: var(--text-3); font-style: normal; }
+.star-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+.star-tag {
+  font-size: 10px; padding: 1px 6px; border-radius: 4px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--text-2); white-space: nowrap;
+}
+.star-tag.royal { background: #FFFBEC; border-color: #F5D87A; color: #7A5800; font-weight: 600; }
+.star-tag.benefic { background: #F0FAF4; border-color: #BAF0CE; color: #16623A; font-weight: 600; }
+.star-tag.malefic-star { background: #FEF2F2; border-color: #FAC4C4; color: #AA2020; font-weight: 600; }
+.star-tag.void { background: var(--surface-2); border-color: var(--border); color: var(--text-3); font-style: italic; }
+
+/* Tags */
+.tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 5px; }
+.tag { font-size: 10px; padding: 1px 7px; border-radius: 4px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-2); white-space: nowrap; }
+.tag-natal   { background: #EFF8F2; border-color: #BAE8CA; color: #16623A; }
+.tag-warn    { background: #FEF4F0; border-color: #FAC4A4; color: #B04A0A; }
+.tag-transit { background: #FEF2F2; border-color: #FAC4C4; color: #AA2020; }
+
+/* ── Nature badge ── */
+.badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; border: 1px solid; white-space: nowrap; }
+.b-benef { background: var(--badge-benef-bg); color: var(--badge-benef-text); border-color: var(--badge-benef-bd); }
+.b-mixed { background: var(--badge-mixed-bg); color: var(--badge-mixed-text); border-color: var(--badge-mixed-bd); }
+.b-malef { background: var(--badge-malef-bg); color: var(--badge-malef-text); border-color: var(--badge-malef-bd); }
+.b-worst { background: var(--badge-worst-bg); color: var(--badge-worst-text); border-color: var(--badge-worst-bd); font-weight: 600; }
+
+/* ── Rating ── */
+.rating { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.r-highest { color: var(--c-highest); }
+.r-prime   { color: var(--c-prime); }
+.r-good    { color: var(--c-good); }
+.r-caution { color: var(--c-caution); }
+.r-avoid   { color: var(--c-avoid); }
+.r-veto    { color: var(--c-veto); }
+
+/* ── Moon phase cell ── */
+.phase-cell { white-space: nowrap; min-width: 90px; }
+.phase-icon { font-size: 20px; display: block; margin-bottom: 3px; }
+.phase-label { font-size: 11px; font-weight: 500; color: var(--text-1); display: block; }
+.phase-dir { font-size: 10px; color: var(--text-3); display: block; margin-top: 1px; }
+.eclipse-badge {
+  display: inline-block; margin-top: 4px;
+  font-size: 9px; font-weight: 600; padding: 1px 6px;
+  border-radius: 4px; background: #FEF2FF; border: 1px solid #E5ACEE; color: #7A1A8A;
+  letter-spacing: .03em;
+}
+
+/* ── Element cell ── */
+.element-cell { min-width: 80px; }
+.element-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 600; padding: 3px 8px;
+  border-radius: 20px; border: 1px solid; white-space: nowrap; margin-bottom: 4px;
+}
+.el-fire  { background: var(--fire-bg);  color: var(--fire-text);  border-color: var(--fire-bd); }
+.el-earth { background: var(--earth-bg); color: var(--earth-text); border-color: var(--earth-bd); }
+.el-air   { background: var(--air-bg);   color: var(--air-text);   border-color: var(--air-bd); }
+.el-water { background: var(--water-bg); color: var(--water-text); border-color: var(--water-bd); }
+.el-oneliner { font-size: 10px; color: var(--text-3); display: block; line-height: 1.4; }
+
+/* ── Action ── */
+.action { font-size: 12px; color: var(--text-2); line-height: 1.55; }
+.action strong { font-weight: 600; color: var(--text-1); }
+
+/* ── Key / Transit boxes ── */
+.key-box, .transits-box {
+  margin-top: 1rem; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+}
+.transits-box { background: #FEF8F5; border-color: #F9DCCF; margin-top: 1rem; }
+.key-box-title {
+  font-size: 11px; font-weight: 600; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: .07em; margin-bottom: 14px;
+}
+.transits-box .key-box-title { color: var(--c-caution); }
+.key-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.key-item { font-size: 13px; line-height: 1.55; }
+.key-item strong { font-weight: 600; color: var(--text-1); display: block; margin-bottom: 2px; }
+.key-item span   { color: var(--text-2); }
+.key-warn        { color: var(--c-veto) !important; }
+.transit-row     { display: flex; flex-wrap: wrap; gap: 8px; }
+.transit-chip {
+  font-size: 12px; padding: 4px 12px; border-radius: 20px;
+  background: var(--surface); border: 1px solid #F9DCCF;
+  color: var(--c-caution); font-weight: 500;
+}
+
+@media (max-width: 720px) {
+  body { padding: 1.25rem 1rem 3rem; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .key-grid   { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-left">
+    <h1>28 Lunar Mansions — Monthly Action Table</h1>
+    <p>Abu Ma'shar framework &nbsp;·&nbsp; Taurus ASC &nbsp;·&nbsp; Venus chart ruler &nbsp;·&nbsp; Mercury LOY &nbsp;·&nbsp; Night chart</p>
+  </div>
+  <div class="wordmark"><div class="wordmark-dot"></div>Psyda / Minhaaj Rehman</div>
+</div>
+
+<div class="month-nav">
+  <button class="mnav-btn" onclick="changeMonth(-1)">&#8592;</button>
+  <div class="mnav-label" id="month-label">— — —</div>
+  <button class="mnav-btn" onclick="changeMonth(+1)">&#8594;</button>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-label">Prime / Safe</div><div class="stat-val sv-safe">16</div></div>
+  <div class="stat-card"><div class="stat-label">Avoid</div><div class="stat-val sv-avoid">6</div></div>
+  <div class="stat-card"><div class="stat-label">Caution</div><div class="stat-val sv-caution">6</div></div>
+  <div class="stat-card"><div class="stat-label">Absolute veto</div><div class="stat-val sv-veto">2</div></div>
+</div>
+
+<div class="filter-row">
+  <button class="fbtn active" onclick="setFilter('all',this)">All 28</button>
+  <button class="fbtn" onclick="setFilter('highest',this)">Highest ✦✦✦</button>
+  <button class="fbtn" onclick="setFilter('prime',this)">Prime</button>
+  <button class="fbtn" onclick="setFilter('avoid',this)">Avoid</button>
+  <button class="fbtn" onclick="setFilter('caution',this)">Caution</button>
+  <button class="fbtn" onclick="setFilter('natal',this)">Natal planets</button>
+  <button class="fbtn" onclick="setFilter('veto',this)">Vetoes only</button>
+  <button class="fbtn" onclick="setFilter('fire',this)">Fire</button>
+  <button class="fbtn" onclick="setFilter('earth',this)">Earth</button>
+  <button class="fbtn" onclick="setFilter('air',this)">Air</button>
+  <button class="fbtn" onclick="setFilter('water',this)">Water</button>
+</div>
+
+<div class="search-wrap">
+  <input type="text" id="search" placeholder="Search name, sign, star, divine name…" oninput="render()">
+</div>
+<p class="count-label" id="count-label">Showing all 28 mansions</p>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:72px">Moon dates</th>
+        <th style="width:210px">Mansion</th>
+        <th style="width:100px">Nature</th>
+        <th style="width:115px">Personal rating</th>
+        <th style="width:100px">Moon phase</th>
+        <th style="width:90px">Element</th>
+        <th>Concrete action</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<div class="key-box" style="margin-top:1.75rem;">
+  <div class="key-box-title">Activation keys</div>
+  <div class="key-grid">
+    <div class="key-item"><strong>Wednesday + Mercury hour</strong><span>M8, M13, M14, M27 — stacks LOY with highest-yield mansions. Max for financial and intellectual work.</span></div>
+    <div class="key-item"><strong>Friday + Venus hour</strong><span>Rescues M2, M5, M9, M21 — turns mixed mansions workable for relational and commercial moves.</span></div>
+    <div class="key-item"><strong>Absolute vetoes (any day)</strong><span class="key-warn">M4 — strikes ASC sign directly. M18 — natal Saturn at its edge. Rest and dhikr only.</span></div>
+    <div class="key-item"><strong>Waxing moon advantage</strong><span>Initiating, building, and launching work best in waxing phase. Waning favors release, editing, completion.</span></div>
+  </div>
+</div>
+
+<div class="transits-box">
+  <div class="key-box-title">Current planetary transits — update monthly</div>
+  <div class="transit-row">
+    <span class="transit-chip">Saturn → M1 Al-Sharatain (Aries)</span>
+    <span class="transit-chip">Mars → M1 Al-Sharatain (Aries)</span>
+    <span class="transit-chip">Mercury → M1 Al-Sharatain (Aries)</span>
+    <span class="transit-chip">Jupiter → M9 Al-Tarf (Cancer)</span>
+  </div>
+  <p style="font-size:11px;color:var(--text-3);margin-top:10px;">Edit chips above each month to reflect slow-planet positions. Moon phases and dates calculate automatically.</p>
+</div>
+
+<script>
+// ── Julian Day ──────────────────────────────────────────────────────
+function toJD(year, month, day, hour) {
+  if (month <= 2) { year -= 1; month += 12; }
+  const A = Math.floor(year / 100);
+  const B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) + day + (hour/24) + B - 1524.5;
+}
+
+// ── Moon longitude (Meeus simplified, ~1° accuracy) ─────────────────
+function moonLon(jd) {
+  const d = jd - 2451545.0, r = Math.PI/180;
+  let L  = ((218.316  + 13.176396*d)%360+360)%360;
+  let M  = ((134.963  + 13.064993*d)%360+360)%360;
+  let F  = ((93.272   + 13.229350*d)%360+360)%360;
+  let D  = ((297.850  + 12.190749*d)%360+360)%360;
+  let Ms = ((357.529  +  0.985600*d)%360+360)%360;
+  const lon = L + 6.289*Math.sin(M*r) + 1.274*Math.sin((2*D-M)*r)
+    + 0.658*Math.sin(2*D*r) + 0.214*Math.sin(2*M*r)
+    - 0.186*Math.sin(Ms*r) - 0.114*Math.sin(2*F*r)
+    + 0.059*Math.sin((2*D-2*M)*r) + 0.057*Math.sin((2*D-Ms-M)*r);
+  return ((lon%360)+360)%360;
+}
+
+// ── Sun longitude (for phase calc) ──────────────────────────────────
+function sunLon(jd) {
+  const d = jd - 2451545.0, T = d/36525, r = Math.PI/180;
+  let L0 = ((280.46646 + 36000.76983*T)%360+360)%360;
+  let M  = ((357.52911 + 35999.05029*T - 0.0001537*T*T)%360+360)%360;
+  const C = (1.914602 - 0.004817*T - 0.000014*T*T)*Math.sin(M*r)
+          + (0.019993 - 0.000101*T)*Math.sin(2*M*r)
+          + 0.000289*Math.sin(3*M*r);
+  return ((L0+C)%360+360)%360;
+}
+
+// ── Moon phase from JD ───────────────────────────────────────────────
+function moonPhase(jd) {
+  const ml = moonLon(jd), sl = sunLon(jd);
+  const angle = ((ml - sl)%360+360)%360;
+  const waxing = angle < 180;
+  let icon, label;
+  if      (angle <  22.5) { icon='🌑'; label='New Moon'; }
+  else if (angle <  67.5) { icon='🌒'; label='Crescent'; }
+  else if (angle < 112.5) { icon='🌓'; label='First Quarter'; }
+  else if (angle < 157.5) { icon='🌔'; label='Waxing Gibbous'; }
+  else if (angle < 202.5) { icon='🌕'; label='Full Moon'; }
+  else if (angle < 247.5) { icon='🌖'; label='Waning Gibbous'; }
+  else if (angle < 292.5) { icon='🌗'; label='Last Quarter'; }
+  else if (angle < 337.5) { icon='🌘'; label='Balsamic'; }
+  else                    { icon='🌑'; label='Dark Moon'; }
+  return { icon, label, waxing, angle };
+}
+
+// ── Mansion from longitude ───────────────────────────────────────────
+function lonToMansion(lon) { return (Math.floor(lon/(360/28))%28)+1; }
+
+// ── Mansion dates for month ──────────────────────────────────────────
+function mansionDatesForMonth(year, month) {
+  const days = new Date(year, month, 0).getDate();
+  const map = {};
+  for (let day = 1; day <= days; day++) {
+    for (let h = 0; h < 24; h += 2) {
+      const jd = toJD(year, month, day, h);
+      const m  = lonToMansion(moonLon(jd));
+      if (!map[m]) map[m] = new Set();
+      map[m].add(day);
+    }
+  }
+  const out = {};
+  for (const [k,v] of Object.entries(map)) out[k] = [...v].sort((a,b)=>a-b);
+  return out;
+}
+
+// ── Format days ─────────────────────────────────────────────────────
+function formatDays(days) {
+  if (!days || !days.length) return null;
+  const R = []; let s=days[0], p=days[0];
+  for (let i=1;i<days.length;i++) {
+    if (days[i]===p+1) p=days[i];
+    else { R.push(s===p?`${s}`:`${s}–${p}`); s=p=days[i]; }
+  }
+  R.push(s===p?`${s}`:`${s}–${p}`);
+  return R.join(', ');
+}
+
+// ── Phase for mansion's first day ───────────────────────────────────
+function phaseForDays(year, month, days) {
+  if (!days || !days.length) return null;
+  const midDay = days[Math.floor(days.length/2)];
+  return moonPhase(toJD(year, month, midDay, 12));
+}
+
+// ── Eclipse dates (2025–2027) ────────────────────────────────────────
+const ECLIPSES = [
+  { y:2025, m:3,  d:14, type:'Total Lunar' },
+  { y:2025, m:3,  d:29, type:'Partial Solar' },
+  { y:2025, m:9,  d:7,  type:'Total Lunar' },
+  { y:2025, m:9,  d:21, type:'Partial Solar' },
+  { y:2026, m:2,  d:17, type:'Annular Solar' },
+  { y:2026, m:3,  d:3,  type:'Total Lunar' },
+  { y:2026, m:8,  d:12, type:'Total Solar' },
+  { y:2026, m:8,  d:28, type:'Partial Lunar' },
+];
+
+function eclipseInDays(year, month, days) {
+  if (!days) return null;
+  for (const e of ECLIPSES) {
+    if (e.y===year && e.m===month && days.includes(e.d)) return e;
+  }
+  return null;
+}
+
+// ── Element config ───────────────────────────────────────────────────
+const ELEMENTS = {
+  fire:  { cls:'el-fire',  icon:'◆', label:'Fire',  oneliner:'Initiate · act boldly' },
+  earth: { cls:'el-earth', icon:'◆', label:'Earth', oneliner:'Ground · build structure' },
+  air:   { cls:'el-air',   icon:'◆', label:'Air',   oneliner:'Communicate · network' },
+  water: { cls:'el-water', icon:'◆', label:'Water', oneliner:'Feel · heal · connect' },
+};
+
+// ── Orbital elements J2000.0 (Meeus Table 31.a) ──────────────────────
+// [L0, L1, a, e0, e1, i0, i1, Om0, Om1, w0, w1]
+// L=mean longitude (°+°/cent), a=AU, e=eccentricity, i=inclination(°),
+// Om=ascending node(°), w=longitude of perihelion(°)
+const OE = {
+  Mercury:[252.250906,149474.0722491,0.38709927,0.20563593, 0.00001906, 7.00497902,-0.00594749, 48.33076593,-0.12534081, 77.45779628, 0.16047689],
+  Venus:  [181.979801, 58519.2130302,0.72333566,0.00677672,-0.00004107, 3.39467605,-0.00078890, 76.67984255,-0.27769418,131.60246718, 0.00268329],
+  Earth:  [100.464457, 36000.7698278,1.00000261,0.01671123,-0.00004392,-0.00001531,-0.01294668,  0.0,         0.0,       102.93768193, 0.32327364],
+  Mars:   [355.433275, 19141.6964746,1.52371034,0.09339410, 0.00007882, 1.84969142,-0.00813131, 49.55953891,-0.29257343,336.04084002, 0.44441088],
+  Jupiter:[ 34.351484,  3034.9056746,5.20288700,0.04838624,-0.00013253, 1.30439695,-0.00183714,100.47390909, 0.20469106, 14.72847983, 0.21252668],
+  Saturn: [ 50.077444,  1222.1137943,9.53667594,0.05386179,-0.00050991, 2.48599187, 0.00193609,113.66242448,-0.28867794, 92.59887831,-0.41897216],
+  Uranus: [314.055005,   429.8640561,19.18916464,0.04725744,-0.00004397,0.77263783,-0.00242939, 74.01692503, 0.04240589,170.9542763,  0.40805281],
+  Neptune:[304.348665,   219.8824473,30.06992276,0.00859048, 0.00005105, 1.77004347, 0.00035372,131.78422574,-0.00508664, 44.96476227,-0.32241464],
+  Pluto:  [238.928524,   145.2078280,39.48211675,0.24882730, 0.00005170,17.14001206, 0.00004818,110.30393684,-0.01183482,224.06891629,-0.04062942],
+};
+
+function _deg(x) { return ((x%360)+360)%360; }
+function _rad(x) { return x*Math.PI/180; }
+
+function solveKepler(M, e) {
+  let E = M;
+  for (let i=0; i<50; i++) {
+    const dE = (M - E + e*Math.sin(E)) / (1 - e*Math.cos(E));
+    E += dE;
+    if (Math.abs(dE) < 1e-10) break;
+  }
+  return E;
+}
+
+function helioXY(jd, name) {
+  const T = (jd-2451545.0)/36525;
+  const el = OE[name];
+  const L  = _rad(_deg(el[0]+el[1]*T));
+  const a  = el[2];
+  const e  = el[3]+el[4]*T;
+  const i  = _rad(el[5]+el[6]*T);
+  const Om = _rad(_deg(el[7]+el[8]*T));
+  const w  = _rad(_deg(el[9]+el[10]*T));
+  const Mv = (((L-w)%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+  const Ev = solveKepler(Mv, e);
+  const v  = 2*Math.atan2(Math.sqrt(1+e)*Math.sin(Ev/2), Math.sqrt(1-e)*Math.cos(Ev/2));
+  const r  = a*(1-e*Math.cos(Ev));
+  const x  = r*(Math.cos(Om)*Math.cos(w+v)-Math.sin(Om)*Math.sin(w+v)*Math.cos(i));
+  const y  = r*(Math.sin(Om)*Math.cos(w+v)+Math.cos(Om)*Math.sin(w+v)*Math.cos(i));
+  return [x, y];
+}
+
+// Geocentric ecliptic longitude for any planet
+function planetLon(jd, name) {
+  if (name==='Sun')  return sunLon(jd);
+  if (name==='Moon') return moonLon(jd);
+  const [xp,yp] = helioXY(jd, name);
+  const [xe,ye] = helioXY(jd, 'Earth');
+  return _deg(Math.atan2(yp-ye, xp-xe)/( Math.PI/180));
+}
+
+function lonToElement(lon) {
+  const s = Math.floor(_deg(lon)/30)%12; // 0=Ari,1=Tau...11=Pis
+  return ['fire','earth','air','water','fire','earth','air','water','fire','earth','air','water'][s];
+}
+
+const ALL_PLANETS = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
+
+function calcElementBalance(jd) {
+  const counts = {fire:0, earth:0, air:0, water:0};
+  for (const p of ALL_PLANETS) counts[lonToElement(planetLon(jd,p))]++;
+  const dominant = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  return { counts, dominant };
+}
+
+function buildElementBalances() {
+  elementBalances = {};
+  for (const m of MANSIONS) {
+    const days = mansionDates[m.num];
+    if (days && days.length) {
+      const mid = days[Math.floor(days.length/2)];
+      elementBalances[m.num] = calcElementBalance(toJD(curYear, curMonth, mid, 12));
+    }
+  }
+}
+
+// ── MANSION DATA ─────────────────────────────────────────────────────
+// element determined by sign where mansion CENTER falls (tropical)
+// letters: 28 Arabic letters in abjad order
+// divine names: traditional Abu Ma'shar / Islamic astrological attribution
+const MANSIONS = [
+  {
+    num:1, name:'Al-Sharatain', deg:"Aries 0°–12°51'",
+    letter:'ا', letterLatin:'Alif',
+    divineName:'Al-Qawwiyy', divineTranslation:'The Powerful',
+    star:'Sheratan β Ari, Mesarthim γ Ari', starClass:'',
+    element:'fire',
+    nature:'mixed', rating:'caution', ratingLabel:'Caution',
+    tags:[{t:'Saturn transit',c:'tag-transit'},{t:'Mars transit',c:'tag-transit'},{t:'Hg transit',c:'tag-transit'}],
+    natal:false, action:'Avoid new starts. Saturn+Mars+Mercury cluster occupying this mansion. Wait until malefics clear Aries.'
+  },
+  {
+    num:2, name:'Al-Butain', deg:"Aries 12°51'–25°42'",
+    letter:'ب', letterLatin:'Ba',
+    divineName:'Al-Basit', divineTranslation:'The Expander',
+    star:'Botein δ Ari', starClass:'',
+    element:'fire',
+    nature:'benef', rating:'good', ratingLabel:'Good',
+    tags:[{t:'Hg LOY zone',c:''}],
+    natal:false, action:'Financial seeding, intellectual work. Wednesday (Mercury hour) or Friday (Venus hour) for full activation.'
+  },
+  {
+    num:3, name:'Al-Thurayya', deg:"Aries 25°42'–Taurus 8°34'",
+    letter:'ج', letterLatin:'Jim',
+    divineName:"Al-Jami'", divineTranslation:'The Gatherer',
+    star:'Pleiades η Tau', starClass:'benefic',
+    element:'earth',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:"ASC 3°26' Taurus",c:'tag-natal'}],
+    natal:true, action:'Personal launches, identity-forward ventures, anything with your name as the brand. Your rising mansion.'
+  },
+  {
+    num:4, name:'Al-Dabaran', deg:"Taurus 8°34'–21°25'",
+    letter:'د', letterLatin:'Dal',
+    divineName:'Al-Darr', divineTranslation:'The Compeller',
+    star:'Aldebaran α Tau', starClass:'royal',
+    element:'earth',
+    nature:'worst', rating:'veto', ratingLabel:'ABSOLUTE VETO',
+    tags:[{t:'ASC sign',c:'tag-warn'}],
+    natal:false, action:'ABSOLUTE AVOID — no exceptions. Most malefic mansion in your Ascendant sign. Strikes body, identity, and chart directly.'
+  },
+  {
+    num:5, name:"Al-Haq'ah", deg:"Taurus 21°25'–Gemini 4°17'",
+    letter:'ه', letterLatin:'Ha',
+    divineName:'Al-Hadi', divineTranslation:'The Guide',
+    star:'Meissa λ Ori, Heka', starClass:'',
+    element:'earth',
+    nature:'benef', rating:'good', ratingLabel:'Good',
+    tags:[{t:'Venus domicile zone',c:'tag-natal'}],
+    natal:false, action:'Learning, health work, medicine, skill-building. Fully unlocked Friday + Venus hour.'
+  },
+  {
+    num:6, name:"Al-Han'ah", deg:"Gemini 4°17'–17°8'",
+    letter:'و', letterLatin:'Waw',
+    divineName:'Al-Wadud', divineTranslation:'The Loving',
+    star:'Alhena γ Gem, Tejat', starClass:'',
+    element:'air',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:'Hg LOY sign',c:''}],
+    natal:false, action:'Networking, social outreach, community engagement, written communication, podcast scheduling.'
+  },
+  {
+    num:7, name:"Al-Dhira'", deg:"Gemini 17°8'–Cancer 0°",
+    letter:'ز', letterLatin:'Zayn',
+    divineName:'Al-Zahir', divineTranslation:'The Manifest',
+    star:'Pollux β Gem, Castor α Gem', starClass:'benefic',
+    element:'air',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:'Hg LOY peak',c:''},{t:'Venus→Cancer',c:'tag-natal'}],
+    natal:false, action:'Business partnerships, Psyda proposals, product launches. Mercury peak + Venus entering Cancer — dual activation.'
+  },
+  {
+    num:8, name:'Al-Nathra', deg:"Cancer 0°–12°51'",
+    letter:'ح', letterLatin:'Ḥa',
+    divineName:'Al-Hayy', divineTranslation:'The Living',
+    star:'Praesepe M44 (Beehive)', starClass:'benefic',
+    element:'water',
+    nature:'benef', rating:'highest', ratingLabel:'HIGHEST ✦✦✦',
+    tags:[{t:"Natal Venus ♀ 1°33'",c:'tag-natal'}],
+    natal:true, action:'<strong>Top priority mansion.</strong> Financial work, relational outreach, health, identity. Chart ruler\'s own mansion. Wednesday + Mercury hour = maximum yield.'
+  },
+  {
+    num:9, name:'Al-Tarf', deg:"Cancer 12°51'–25°42'",
+    letter:'ط', letterLatin:'Ṭa',
+    divineName:'Al-Sami', divineTranslation:'The All-Hearing',
+    star:'Asellus Borealis & Australis', starClass:'',
+    element:'water',
+    nature:'malef', rating:'avoid', ratingLabel:'Avoid',
+    tags:[{t:'Jupiter transit',c:'tag-transit'},{t:'Venus sign',c:''}],
+    natal:false, action:"Avoid despite Venus's sign — mansion is malefic. Jupiter transit slightly mitigates: light research only, no commitments."
+  },
+  {
+    num:10, name:'Al-Jabbah', deg:"Cancer 25°42'–Leo 8°34'",
+    letter:'ي', letterLatin:'Ya',
+    divineName:'Al-Kafi', divineTranslation:'The Sufficient',
+    star:'Regulus α Leo', starClass:'royal',
+    element:'fire',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:"Natal Mars 6°10' Leo",c:'tag-natal'}],
+    natal:true, action:"Overcoming obstacles, authority outreach, assertive action, dhikr Al-Qahhar. Mars natal energy supports push-through decisions."
+  },
+  {
+    num:11, name:'Al-Zubrah', deg:"Leo 8°34'–21°25'",
+    letter:'ك', letterLatin:'Kaf',
+    divineName:'Al-Karim', divineTranslation:'The Generous',
+    star:'Zosma δ Leo, Chertan θ Leo', starClass:'',
+    element:'fire',
+    nature:'benef', rating:'highest', ratingLabel:'HIGHEST ✦✦✦',
+    tags:[{t:"Natal Sun 11°19' Leo",c:'tag-natal'}],
+    natal:true, action:'<strong>Career authority, public visibility, Psyda thought-leadership.</strong> Your solar mansion — peak for anything that puts your name forward.'
+  },
+  {
+    num:12, name:'Al-Sarfah', deg:"Leo 21°25'–Virgo 4°17'",
+    letter:'ل', letterLatin:'Lam',
+    divineName:'Al-Latif', divineTranslation:'The Subtle',
+    star:'Denebola β Leo', starClass:'',
+    element:'fire',
+    nature:'malef', rating:'avoid', ratingLabel:'Avoid',
+    tags:[{t:"Natal Hg Rx 23°25' Leo",c:'tag-warn'}],
+    natal:true, action:"Private reflection only. Do not initiate. LOY natal mansion is malefic — launching here undermines Mercury's function."
+  },
+  {
+    num:13, name:"Al-Awwa", deg:"Virgo 4°17'–17°8'",
+    letter:'م', letterLatin:'Mim',
+    divineName:"Al-Mu'min", divineTranslation:'The Faithful',
+    star:'Porrima γ Vir, Vindemiatrix', starClass:'',
+    element:'earth',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:'Hg LOY Virgo zone',c:''}],
+    natal:false, action:'All commercial and intellectual work: proposals, consulting pitches, trade agreements, research publishing.'
+  },
+  {
+    num:14, name:'Al-Simak', deg:"Virgo 17°8'–30°",
+    letter:'ن', letterLatin:'Nun',
+    divineName:'Al-Nur', divineTranslation:'The Light',
+    star:'Spica α Vir', starClass:'benefic',
+    element:'earth',
+    nature:'benef', rating:'highest', ratingLabel:'HIGHEST ✦✦✦',
+    tags:[{t:"Part of Fortune 29°06'",c:'tag-natal'}],
+    natal:true, action:'<strong>Financial breakthroughs, fortune-activation, health milestones.</strong> Part of Fortune mansion — highest yield for income-generating and wealth moves.'
+  },
+  {
+    num:15, name:'Al-Ghafr', deg:"Libra 0°–12°51'",
+    letter:'س', letterLatin:'Sin',
+    divineName:'Al-Salam', divineTranslation:'The Peace',
+    star:'Arcturus α Boo (nearby)', starClass:'benefic',
+    element:'air',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:'6th house opens',c:''}],
+    natal:false, action:'Health system establishment, financial recovery, uncovering hidden resources. 6th house Libra entrance.'
+  },
+  {
+    num:16, name:'Al-Zabana', deg:"Libra 12°51'–25°42'",
+    letter:'ع', letterLatin:"'Ayn",
+    divineName:"Al-'Ali", divineTranslation:'The High',
+    star:'Graffias β Sco, Dschubba δ Sco', starClass:'',
+    element:'air',
+    nature:'malef', rating:'avoid', ratingLabel:'Avoid',
+    tags:[{t:'6th house',c:''},{t:'Venus rules',c:''}],
+    natal:false, action:"Health vulnerability window. Avoid treatments, commerce, partnerships. Venus rulership does not override malefic nature."
+  },
+  {
+    num:17, name:'Al-Iklil', deg:"Libra 25°42'–Scorpio 8°34'",
+    letter:'ف', letterLatin:'Fa',
+    divineName:'Al-Fattah', divineTranslation:'The Opener',
+    star:'Acrab β Sco, Jabhat al-Akrab', starClass:'',
+    element:'water',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:'7th house threshold',c:''}],
+    natal:false, action:'Beneficial partnership discussions, authority petitions, building commitments. 7th house (Scorpio) opens here.'
+  },
+  {
+    num:18, name:'Al-Qalb', deg:"Scorpio 8°34'–21°25'",
+    letter:'ص', letterLatin:'Ṣad',
+    divineName:'Al-Samad', divineTranslation:'The Eternal',
+    star:'Antares α Sco', starClass:'malefic-star',
+    element:'water',
+    nature:'worst', rating:'veto', ratingLabel:'ABSOLUTE VETO',
+    tags:[{t:"Natal Saturn 21°31' Scorpio",c:'tag-warn'}],
+    natal:true, action:'ABSOLUTE AVOID — double malefic. Most dangerous mansion + natal Saturn at its edge. Most dangerous planet in most dangerous mansion. Rest and dhikr only.'
+  },
+  {
+    num:19, name:'Al-Shawla', deg:"Scorpio 21°25'–Sag 4°17'",
+    letter:'ق', letterLatin:'Qaf',
+    divineName:'Al-Qadir', divineTranslation:'The Capable',
+    star:'Shaula λ Sco, Lesath υ Sco', starClass:'',
+    element:'water',
+    nature:'malef', rating:'avoid', ratingLabel:'Avoid',
+    tags:[{t:'7th/8th boundary',c:'tag-warn'}],
+    natal:false, action:'Avoid relationship matters and financial decisions especially. 7th/8th house boundary — relational and resource danger.'
+  },
+  {
+    num:20, name:"Al-Na'aim", deg:"Sag 4°17'–17°8'",
+    letter:'ر', letterLatin:'Ra',
+    divineName:'Al-Rahman', divineTranslation:'The Merciful',
+    star:'Nunki σ Sgr, Ascella ζ Sgr', starClass:'',
+    element:'fire',
+    nature:'benef', rating:'good', ratingLabel:'Good',
+    tags:[{t:'8th house Jup-ruled',c:''}],
+    natal:false, action:'Trade, travel planning, taming difficult situations, patient negotiation. Jupiter-ruled 8th house.'
+  },
+  {
+    num:21, name:'Al-Baldah', deg:"Sag 17°8'–30°",
+    letter:'ش', letterLatin:'Shin',
+    divineName:'Al-Shahid', divineTranslation:'The Witness',
+    star:'(Empty region of sky)', starClass:'void',
+    element:'fire',
+    nature:'mixed', rating:'caution', ratingLabel:'Caution',
+    tags:[{t:'8th/9th boundary',c:''}],
+    natal:false, action:'Solo assertive decisions only. No partnerships, no medicine. Works for deliberate push-through moves. Void sky region — reduced celestial support.'
+  },
+  {
+    num:22, name:"Sa'd al-Dhabih", deg:"Cap 0°–12°51'",
+    letter:'ت', letterLatin:'Ta',
+    divineName:'Al-Tawwab', divineTranslation:'The Relenting',
+    star:'Algedi α Cap, Dabih β Cap', starClass:'',
+    element:'earth',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:'9th house MC zone',c:''}],
+    natal:false, action:'Career reputation work, healing practices, fortune-seeking prayers. Saturn-ruled 9th — serious, structured achievement.'
+  },
+  {
+    num:23, name:"Sa'd Bula'", deg:"Cap 12°51'–25°42'",
+    letter:'ث', letterLatin:'Tha',
+    divineName:'Al-Matin', divineTranslation:'The Firm',
+    star:'Nashira γ Cap, Deneb Algedi δ Cap', starClass:'',
+    element:'earth',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:"MC 22°09' Capricorn",c:'tag-natal'}],
+    natal:true, action:'<strong>Career launches, book/article publishing, public reputation moves.</strong> Your MC mansion — maximum career impact and public recognition potential.'
+  },
+  {
+    num:24, name:"Sa'd al-Su'ud", deg:"Cap 25°42'–Aqu 8°34'",
+    letter:'خ', letterLatin:'Kha',
+    divineName:'Al-Khaliq', divineTranslation:'The Creator',
+    star:'Sadalsuud β Aqr', starClass:'benefic',
+    element:'air',
+    nature:'benef', rating:'good', ratingLabel:'Good',
+    tags:[{t:'9th/10th boundary',c:''}],
+    natal:false, action:'Liberation from constraint, intellectual pivots, new directions, travel planning. 9th/10th crossing.'
+  },
+  {
+    num:25, name:"Sa'd al-Akhbiyah", deg:"Aqu 8°34'–21°25'",
+    letter:'ذ', letterLatin:'Dhal',
+    divineName:'Al-Razzaq', divineTranslation:'The Provider',
+    star:'Sadalmelik α Aqr, Sadachbia γ Aqr', starClass:'',
+    element:'air',
+    nature:'mixed', rating:'caution', ratingLabel:'Caution',
+    tags:[{t:"Natal Jupiter Rx 12°07' Aqu",c:'tag-warn'}],
+    natal:true, action:"Intellectual and research work: yes. Commerce and financial commitments: caution. Jupiter Rx natal here — promises consistently underdeliver on material outcomes."
+  },
+  {
+    num:26, name:'Al-Fargh al-Awwal', deg:"Aqu 21°25'–Pis 4°17'",
+    letter:'ض', letterLatin:'Dad',
+    divineName:'Al-Nafi', divineTranslation:'The Beneficial',
+    star:'Markab α Peg, Scheat β Peg', starClass:'',
+    element:'air',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:'10th/11th boundary',c:''}],
+    natal:false, action:'Community building, career through alliances, strategic networking that converts to professional opportunity.'
+  },
+  {
+    num:27, name:'Al-Fargh al-Thani', deg:"Pis 4°17'–17°8'",
+    letter:'ظ', letterLatin:'Dha',
+    divineName:'Al-Dhahir', divineTranslation:'The Manifest',
+    star:'Algenib γ Peg, Alpheratz α And', starClass:'',
+    element:'water',
+    nature:'benef', rating:'highest', ratingLabel:'HIGHEST ✦✦✦',
+    tags:[{t:"Natal Moon 15°40' Pisces",c:'tag-natal'}],
+    natal:true, action:"<strong>Community work, emotional healing, spiritual practice, sect light activation.</strong> Your Moon's own mansion. Wednesday = peak LOY alignment."
+  },
+  {
+    num:28, name:'Al-Batn al-Hut', deg:"Pis 17°8'–30°",
+    letter:'غ', letterLatin:'Ghayn',
+    divineName:'Al-Ghafur', divineTranslation:'The Forgiving',
+    star:'Mirach β And, Alrescha α Psc', starClass:'',
+    element:'water',
+    nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
+    tags:[{t:'11th house culmination',c:''}],
+    natal:false, action:'Community connection, friendship cultivation, hope and aspiration work. 11th house Pisces peak — strong for audience and collective projects.'
+  },
+];
+
+// ── State ────────────────────────────────────────────────────────────
+const now = new Date();
+let curYear  = now.getFullYear();
+let curMonth = now.getMonth() + 1;
+let activeFilter = 'all';
+let mansionDates = {};
+let elementBalances = {};
+
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function natureBadge(n) {
+  return { benef:['b-benef','Beneficial'], mixed:['b-mixed','Mixed'], malef:['b-malef','Malefic'], worst:['b-worst','Most malefic'] }[n] || ['b-benef','Beneficial'];
+}
+function ratingClass(r) {
+  return { highest:'r-highest', prime:'r-prime', good:'r-good', caution:'r-caution', avoid:'r-avoid', veto:'r-veto' }[r] || 'r-good';
+}
+
+function buildDates() {
+  mansionDates = mansionDatesForMonth(curYear, curMonth);
+  buildElementBalances();
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const mAbbr = MONTH_SHORT[curMonth-1];
+  const tbody = document.getElementById('tbody');
+
+  let rows = MANSIONS.filter(m => {
+    const mf =
+      activeFilter === 'all' ||
+      (activeFilter === 'highest' && m.rating === 'highest') ||
+      (activeFilter === 'prime'   && (m.rating === 'prime' || m.rating === 'highest')) ||
+      (activeFilter === 'avoid'   && (m.rating === 'avoid' || m.rating === 'veto')) ||
+      (activeFilter === 'caution' && (m.rating === 'caution' || m.rating === 'good')) ||
+      (activeFilter === 'natal'   && m.natal) ||
+      (activeFilter === 'veto'    && m.rating === 'veto') ||
+      (activeFilter === 'fire'    && elementBalances[m.num]?.dominant === 'fire') ||
+      (activeFilter === 'earth'   && elementBalances[m.num]?.dominant === 'earth') ||
+      (activeFilter === 'air'     && elementBalances[m.num]?.dominant === 'air') ||
+      (activeFilter === 'water'   && elementBalances[m.num]?.dominant === 'water');
+    const ms = !q ||
+      m.name.toLowerCase().includes(q) || m.deg.toLowerCase().includes(q) ||
+      m.action.toLowerCase().includes(q) || m.divineName.toLowerCase().includes(q) ||
+      m.divineTranslation.toLowerCase().includes(q) || m.star.toLowerCase().includes(q) ||
+      m.letterLatin.toLowerCase().includes(q) ||
+      m.tags.some(t=>t.t.toLowerCase().includes(q)) || String(m.num)===q;
+    return mf && ms;
+  });
+
+  document.getElementById('count-label').textContent =
+    rows.length===28 ? 'Showing all 28 mansions' : `Showing ${rows.length} of 28`;
+
+  tbody.innerHTML = rows.map(m => {
+    const days = mansionDates[m.num];
+    const dStr = formatDays(days);
+    const phase = days ? phaseForDays(curYear, curMonth, days) : null;
+    const ecl   = eclipseInDays(curYear, curMonth, days);
+    const [bc, bl] = natureBadge(m.nature);
+    const rc = ratingClass(m.rating);
+    const eb = elementBalances[m.num];
+    const dominant = eb ? eb.dominant : null;
+    const el = dominant ? ELEMENTS[dominant] : null;
+    const tagHtml = m.tags.map(t=>`<span class="tag ${t.c}">${t.t}</span>`).join('');
+
+    // Moon dates cell
+    const datesHtml = dStr
+      ? `<span class="dates-day">${dStr}</span><span class="dates-month">${mAbbr}</span>`
+      : `<span class="dates-none">—</span>`;
+
+    // Phase cell
+    let phaseHtml = '<span style="color:var(--text-3);font-size:11px;">—</span>';
+    if (phase) {
+      const dir = phase.waxing ? '↑ Waxing' : '↓ Waning';
+      const dirColor = phase.waxing ? 'var(--c-prime)' : 'var(--c-caution)';
+      phaseHtml = `<span class="phase-icon">${phase.icon}</span>
+        <span class="phase-label">${phase.label}</span>
+        <span class="phase-dir" style="color:${dirColor}">${dir}</span>
+        ${ecl ? `<span class="eclipse-badge">◉ ${ecl.type}</span>` : ''}`;
+    }
+
+    // Element cell — dominant element from all 10 planets
+    const elHtml = el
+      ? `<span class="element-pill ${el.cls}">${el.icon} ${el.label}</span>
+         <span class="el-oneliner">${eb.counts[dominant]} of 10 · ${el.oneliner}</span>`
+      : `<span style="color:var(--text-3);font-size:11px;">—</span>`;
+
+    // Star row
+    const starNoteLabel = { royal:'Royal Star ★', benefic:'Most Benefic ✦', 'malefic-star':'Royal Star (malefic) ✖', void:'Void region', '':'' }[m.starClass] || '';
+    const starHtml = `<div class="star-row">
+      <span class="star-tag">${m.star}</span>
+      ${starNoteLabel ? `<span class="star-tag ${m.starClass}">${starNoteLabel}</span>` : ''}
+    </div>`;
+
+    return `<tr class="${m.rating==='veto'?'row-veto':''}">
+      <td><div class="dates-cell">${datesHtml}</div></td>
+      <td>
+        <div class="m-header">
+          <span class="m-num">M${m.num}</span>
+          <span class="m-name">${m.name}</span>
+        </div>
+        <div class="m-deg">${m.deg}</div>
+        <div class="m-meta">
+          <div class="m-letter-row">
+            <span class="arabic-letter">${m.letter}</span>
+            <span class="letter-latin">${m.letterLatin}</span>
+            <span class="divine-name">${m.divineName} <span>· ${m.divineTranslation}</span></span>
+          </div>
+          ${starHtml}
+        </div>
+        <div class="tags">${tagHtml}</div>
+      </td>
+      <td><span class="badge ${bc}">${bl}</span></td>
+      <td><span class="rating ${rc}">${m.ratingLabel}</span></td>
+      <td><div class="phase-cell">${phaseHtml}</div></td>
+      <td><div class="element-cell">${elHtml}</div></td>
+      <td><span class="action">${m.action}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function setFilter(type, btn) {
+  activeFilter = type;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function changeMonth(delta) {
+  curMonth += delta;
+  if (curMonth>12) { curMonth=1; curYear++; }
+  if (curMonth<1)  { curMonth=12; curYear--; }
+  document.getElementById('month-label').textContent = `${MONTH_NAMES[curMonth-1]} ${curYear}`;
+  buildDates(); render();
+}
+
+// Init
+document.getElementById('month-label').textContent = `${MONTH_NAMES[curMonth-1]} ${curYear}`;
+buildDates();
+render();
+</script>
+</body>
+</html>
