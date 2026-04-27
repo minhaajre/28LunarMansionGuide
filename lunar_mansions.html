@@ -152,6 +152,7 @@ td { padding: 11px 12px; vertical-align: top; }
 .letter-latin { font-size: 10px; color: var(--text-3); font-weight: 500; letter-spacing: .03em; }
 .divine-name { font-size: 11px; color: var(--text-2); font-style: italic; }
 .divine-name span { color: var(--text-3); font-style: normal; }
+.divine-cosmology { font-size: 10px; color: var(--text-3); display: block; margin-top: 2px; line-height: 1.3; font-style: normal; }
 .star-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
 .star-tag {
   font-size: 10px; padding: 1px 6px; border-radius: 4px;
@@ -528,14 +529,15 @@ function buildElementBalances() {
 }
 
 // ── MANSION DATA ─────────────────────────────────────────────────────
-// element determined by sign where mansion CENTER falls (tropical)
-// letters: 28 Arabic letters in abjad order
-// divine names: traditional Abu Ma'shar / Islamic astrological attribution
+// letters: 28 Arabic letters in abjad order (Eastern tradition)
+// divine names: Ibn Arabi, Futuhat al-Makkiyya Ch.198
+//   collated from relevant sources by Latifa Shahab Laker
 const MANSIONS = [
   {
     num:1, name:'Al-Sharatain', deg:"Aries 0°–12°51'",
     letter:'ا', letterLatin:'Alif',
-    divineName:'Al-Qawwiyy', divineTranslation:'The Powerful',
+    divineName:'Al-Badi', divineTranslation:'The Initiating',
+    cosmology:'First Intellect · The Pen',
     star:'Sheratan β Ari, Mesarthim γ Ari', starClass:'',
     element:'fire',
     nature:'mixed', rating:'caution', ratingLabel:'Caution',
@@ -545,7 +547,8 @@ const MANSIONS = [
   {
     num:2, name:'Al-Butain', deg:"Aries 12°51'–25°42'",
     letter:'ب', letterLatin:'Ba',
-    divineName:'Al-Basit', divineTranslation:'The Expander',
+    divineName:"Al-Ba'ith", divineTranslation:'He who raises up — The Sender',
+    cosmology:'Protected Tablet · Universal Soul',
     star:'Botein δ Ari', starClass:'',
     element:'fire',
     nature:'benef', rating:'good', ratingLabel:'Good',
@@ -555,7 +558,8 @@ const MANSIONS = [
   {
     num:3, name:'Al-Thurayya', deg:"Aries 25°42'–Taurus 8°34'",
     letter:'ج', letterLatin:'Jim',
-    divineName:"Al-Jami'", divineTranslation:'The Gatherer',
+    divineName:'Al-Batin', divineTranslation:'The Hidden — The Inward',
+    cosmology:'Universal Nature',
     star:'Pleiades η Tau', starClass:'benefic',
     element:'earth',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -565,7 +569,8 @@ const MANSIONS = [
   {
     num:4, name:'Al-Dabaran', deg:"Taurus 8°34'–21°25'",
     letter:'د', letterLatin:'Dal',
-    divineName:'Al-Darr', divineTranslation:'The Compeller',
+    divineName:"Al-Akhir", divineTranslation:'The Last',
+    cosmology:'Universal Substance · Prima Materia',
     star:'Aldebaran α Tau', starClass:'royal',
     element:'earth',
     nature:'worst', rating:'veto', ratingLabel:'ABSOLUTE VETO',
@@ -573,9 +578,10 @@ const MANSIONS = [
     natal:false, action:'ABSOLUTE AVOID — no exceptions. Most malefic mansion in your Ascendant sign. Strikes body, identity, and chart directly.'
   },
   {
-    num:5, name:"Al-Haq'ah", deg:"Taurus 21°25'–Gemini 4°17'",
+    num:5, name:"Al-Hak'ah", deg:"Taurus 21°25'–Gemini 4°17'",
     letter:'ه', letterLatin:'Ha',
-    divineName:'Al-Hadi', divineTranslation:'The Guide',
+    divineName:'Al-Zahir', divineTranslation:'The Manifest — The Outward',
+    cosmology:'Universal Body · All corporeal and imaginal forms',
     star:'Meissa λ Ori, Heka', starClass:'',
     element:'earth',
     nature:'benef', rating:'good', ratingLabel:'Good',
@@ -585,7 +591,8 @@ const MANSIONS = [
   {
     num:6, name:"Al-Han'ah", deg:"Gemini 4°17'–17°8'",
     letter:'و', letterLatin:'Waw',
-    divineName:'Al-Wadud', divineTranslation:'The Loving',
+    divineName:'Al-Hakim', divineTranslation:'The Wise — Discriminating Wisdom',
+    cosmology:'The power of shape and form',
     star:'Alhena γ Gem, Tejat', starClass:'',
     element:'air',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -595,7 +602,8 @@ const MANSIONS = [
   {
     num:7, name:"Al-Dhira'", deg:"Gemini 17°8'–Cancer 0°",
     letter:'ز', letterLatin:'Zayn',
-    divineName:'Al-Zahir', divineTranslation:'The Manifest',
+    divineName:'Al-Muhit', divineTranslation:'The All-Encompassing',
+    cosmology:'The Throne · All-encompassing Mercy',
     star:'Pollux β Gem, Castor α Gem', starClass:'benefic',
     element:'air',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -603,9 +611,10 @@ const MANSIONS = [
     natal:false, action:'Business partnerships, Psyda proposals, product launches. Mercury peak + Venus entering Cancer — dual activation.'
   },
   {
-    num:8, name:'Al-Nathra', deg:"Cancer 0°–12°51'",
+    num:8, name:'Al-Nathrah', deg:"Cancer 0°–12°51'",
     letter:'ح', letterLatin:'Ḥa',
-    divineName:'Al-Hayy', divineTranslation:'The Living',
+    divineName:'Al-Shakur', divineTranslation:'The Grateful',
+    cosmology:'The Footstool (Kursi) · First imaginal station',
     star:'Praesepe M44 (Beehive)', starClass:'benefic',
     element:'water',
     nature:'benef', rating:'highest', ratingLabel:'HIGHEST ✦✦✦',
@@ -615,7 +624,8 @@ const MANSIONS = [
   {
     num:9, name:'Al-Tarf', deg:"Cancer 12°51'–25°42'",
     letter:'ط', letterLatin:'Ṭa',
-    divineName:'Al-Sami', divineTranslation:'The All-Hearing',
+    divineName:'Al-Ghani', divineTranslation:'The Independent — The Rich',
+    cosmology:'Black satin sphere · Starless outer sphere · Zodiacal towers',
     star:'Asellus Borealis & Australis', starClass:'',
     element:'water',
     nature:'malef', rating:'avoid', ratingLabel:'Avoid',
@@ -623,19 +633,21 @@ const MANSIONS = [
     natal:false, action:"Avoid despite Venus's sign — mansion is malefic. Jupiter transit slightly mitigates: light research only, no commitments."
   },
   {
-    num:10, name:'Al-Jabbah', deg:"Cancer 25°42'–Leo 8°34'",
+    num:10, name:'Al-Jabhah', deg:"Cancer 25°42'–Leo 8°34'",
     letter:'ي', letterLatin:'Ya',
-    divineName:'Al-Kafi', divineTranslation:'The Sufficient',
+    divineName:'Al-Muqtadir', divineTranslation:'The All-Powerful',
+    cosmology:'Sphere of Fixed Stars · Station of the 28 mansions',
     star:'Regulus α Leo', starClass:'royal',
     element:'fire',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
     tags:[{t:"Natal Mars 6°10' Leo",c:'tag-natal'}],
-    natal:true, action:"Overcoming obstacles, authority outreach, assertive action, dhikr Al-Qahhar. Mars natal energy supports push-through decisions."
+    natal:true, action:"Overcoming obstacles, authority outreach, assertive action. Mars natal energy supports push-through decisions."
   },
   {
     num:11, name:'Al-Zubrah', deg:"Leo 8°34'–21°25'",
     letter:'ك', letterLatin:'Kaf',
-    divineName:'Al-Karim', divineTranslation:'The Generous',
+    divineName:'Al-Rabb', divineTranslation:'The Lord',
+    cosmology:'First Heaven · Sphere of Saturn · Prophet Abraham',
     star:'Zosma δ Leo, Chertan θ Leo', starClass:'',
     element:'fire',
     nature:'benef', rating:'highest', ratingLabel:'HIGHEST ✦✦✦',
@@ -645,7 +657,8 @@ const MANSIONS = [
   {
     num:12, name:'Al-Sarfah', deg:"Leo 21°25'–Virgo 4°17'",
     letter:'ل', letterLatin:'Lam',
-    divineName:'Al-Latif', divineTranslation:'The Subtle',
+    divineName:"Al-'Alim", divineTranslation:'The All-Knowing',
+    cosmology:'Second Heaven · Sphere of Jupiter · Prophet Moses',
     star:'Denebola β Leo', starClass:'',
     element:'fire',
     nature:'malef', rating:'avoid', ratingLabel:'Avoid',
@@ -655,7 +668,8 @@ const MANSIONS = [
   {
     num:13, name:"Al-Awwa", deg:"Virgo 4°17'–17°8'",
     letter:'م', letterLatin:'Mim',
-    divineName:"Al-Mu'min", divineTranslation:'The Faithful',
+    divineName:'Al-Qahhar', divineTranslation:'The Subduer — The Victorious',
+    cosmology:'Third Heaven · Sphere of Mars · Prophet Aaron',
     star:'Porrima γ Vir, Vindemiatrix', starClass:'',
     element:'earth',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -666,6 +680,7 @@ const MANSIONS = [
     num:14, name:'Al-Simak', deg:"Virgo 17°8'–30°",
     letter:'ن', letterLatin:'Nun',
     divineName:'Al-Nur', divineTranslation:'The Light',
+    cosmology:'Fourth Heaven · Sphere of the Sun · Prophet Idris (Enoch)',
     star:'Spica α Vir', starClass:'benefic',
     element:'earth',
     nature:'benef', rating:'highest', ratingLabel:'HIGHEST ✦✦✦',
@@ -675,7 +690,8 @@ const MANSIONS = [
   {
     num:15, name:'Al-Ghafr', deg:"Libra 0°–12°51'",
     letter:'س', letterLatin:'Sin',
-    divineName:'Al-Salam', divineTranslation:'The Peace',
+    divineName:'Al-Musawwir', divineTranslation:'The Form-Giver',
+    cosmology:'Fifth Heaven · Sphere of Venus · Prophet Joseph',
     star:'Arcturus α Boo (nearby)', starClass:'benefic',
     element:'air',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -683,9 +699,10 @@ const MANSIONS = [
     natal:false, action:'Health system establishment, financial recovery, uncovering hidden resources. 6th house Libra entrance.'
   },
   {
-    num:16, name:'Al-Zabana', deg:"Libra 12°51'–25°42'",
+    num:16, name:'Al-Zubana', deg:"Libra 12°51'–25°42'",
     letter:'ع', letterLatin:"'Ayn",
-    divineName:"Al-'Ali", divineTranslation:'The High',
+    divineName:'Al-Muhsi', divineTranslation:'The Enumerator',
+    cosmology:'Sixth Heaven · Sphere of Mercury · Prophet Jesus',
     star:'Graffias β Sco, Dschubba δ Sco', starClass:'',
     element:'air',
     nature:'malef', rating:'avoid', ratingLabel:'Avoid',
@@ -695,7 +712,8 @@ const MANSIONS = [
   {
     num:17, name:'Al-Iklil', deg:"Libra 25°42'–Scorpio 8°34'",
     letter:'ف', letterLatin:'Fa',
-    divineName:'Al-Fattah', divineTranslation:'The Opener',
+    divineName:'Al-Mubin', divineTranslation:'The Clarifier — The Evident',
+    cosmology:'Seventh Heaven (nearest) · Sphere of the Moon · Prophet Adam',
     star:'Acrab β Sco, Jabhat al-Akrab', starClass:'',
     element:'water',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -705,7 +723,8 @@ const MANSIONS = [
   {
     num:18, name:'Al-Qalb', deg:"Scorpio 8°34'–21°25'",
     letter:'ص', letterLatin:'Ṣad',
-    divineName:'Al-Samad', divineTranslation:'The Eternal',
+    divineName:'Al-Qabid', divineTranslation:'The Restrainer — The Seizer',
+    cosmology:'Element Fire and Ether',
     star:'Antares α Sco', starClass:'malefic-star',
     element:'water',
     nature:'worst', rating:'veto', ratingLabel:'ABSOLUTE VETO',
@@ -713,9 +732,10 @@ const MANSIONS = [
     natal:true, action:'ABSOLUTE AVOID — double malefic. Most dangerous mansion + natal Saturn at its edge. Most dangerous planet in most dangerous mansion. Rest and dhikr only.'
   },
   {
-    num:19, name:'Al-Shawla', deg:"Scorpio 21°25'–Sag 4°17'",
+    num:19, name:'Al-Shaulah', deg:"Scorpio 21°25'–Sag 4°17'",
     letter:'ق', letterLatin:'Qaf',
-    divineName:'Al-Qadir', divineTranslation:'The Capable',
+    divineName:'Al-Hayy', divineTranslation:'The Living',
+    cosmology:'Element Air',
     star:'Shaula λ Sco, Lesath υ Sco', starClass:'',
     element:'water',
     nature:'malef', rating:'avoid', ratingLabel:'Avoid',
@@ -725,7 +745,8 @@ const MANSIONS = [
   {
     num:20, name:"Al-Na'aim", deg:"Sag 4°17'–17°8'",
     letter:'ر', letterLatin:'Ra',
-    divineName:'Al-Rahman', divineTranslation:'The Merciful',
+    divineName:'Al-Muhyi', divineTranslation:'The Life-Giver',
+    cosmology:'Element Water',
     star:'Nunki σ Sgr, Ascella ζ Sgr', starClass:'',
     element:'fire',
     nature:'benef', rating:'good', ratingLabel:'Good',
@@ -735,7 +756,8 @@ const MANSIONS = [
   {
     num:21, name:'Al-Baldah', deg:"Sag 17°8'–30°",
     letter:'ش', letterLatin:'Shin',
-    divineName:'Al-Shahid', divineTranslation:'The Witness',
+    divineName:'Al-Mumit', divineTranslation:'The Death-Giver',
+    cosmology:'Element Earth',
     star:'(Empty region of sky)', starClass:'void',
     element:'fire',
     nature:'mixed', rating:'caution', ratingLabel:'Caution',
@@ -745,7 +767,8 @@ const MANSIONS = [
   {
     num:22, name:"Sa'd al-Dhabih", deg:"Cap 0°–12°51'",
     letter:'ت', letterLatin:'Ta',
-    divineName:'Al-Tawwab', divineTranslation:'The Relenting',
+    divineName:"Al-'Aziz", divineTranslation:'The Precious — The Inaccessible',
+    cosmology:'Minerals and metals · Exalted primary crystal order',
     star:'Algedi α Cap, Dabih β Cap', starClass:'',
     element:'earth',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -755,7 +778,8 @@ const MANSIONS = [
   {
     num:23, name:"Sa'd Bula'", deg:"Cap 12°51'–25°42'",
     letter:'ث', letterLatin:'Tha',
-    divineName:'Al-Matin', divineTranslation:'The Firm',
+    divineName:'Al-Razzaq', divineTranslation:'The Nourisher — The Sustainer',
+    cosmology:'Plant kingdom',
     star:'Nashira γ Cap, Deneb Algedi δ Cap', starClass:'',
     element:'earth',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -765,7 +789,8 @@ const MANSIONS = [
   {
     num:24, name:"Sa'd al-Su'ud", deg:"Cap 25°42'–Aqu 8°34'",
     letter:'خ', letterLatin:'Kha',
-    divineName:'Al-Khaliq', divineTranslation:'The Creator',
+    divineName:'Al-Mudhill', divineTranslation:'The Humbler',
+    cosmology:'Animal kingdom',
     star:'Sadalsuud β Aqr', starClass:'benefic',
     element:'air',
     nature:'benef', rating:'good', ratingLabel:'Good',
@@ -775,7 +800,8 @@ const MANSIONS = [
   {
     num:25, name:"Sa'd al-Akhbiyah", deg:"Aqu 8°34'–21°25'",
     letter:'ذ', letterLatin:'Dhal',
-    divineName:'Al-Razzaq', divineTranslation:'The Provider',
+    divineName:'Al-Qawiyy', divineTranslation:'The Powerful — Inner Strength',
+    cosmology:'The Angels · Strength from emptiness of self',
     star:'Sadalmelik α Aqr, Sadachbia γ Aqr', starClass:'',
     element:'air',
     nature:'mixed', rating:'caution', ratingLabel:'Caution',
@@ -785,7 +811,8 @@ const MANSIONS = [
   {
     num:26, name:'Al-Fargh al-Awwal', deg:"Aqu 21°25'–Pis 4°17'",
     letter:'ض', letterLatin:'Dad',
-    divineName:'Al-Nafi', divineTranslation:'The Beneficial',
+    divineName:'Al-Latif', divineTranslation:'The Subtle — Graciously Attenuating',
+    cosmology:'The Jinn',
     star:'Markab α Peg, Scheat β Peg', starClass:'',
     element:'air',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -795,7 +822,8 @@ const MANSIONS = [
   {
     num:27, name:'Al-Fargh al-Thani', deg:"Pis 4°17'–17°8'",
     letter:'ظ', letterLatin:'Dha',
-    divineName:'Al-Dhahir', divineTranslation:'The Manifest',
+    divineName:"Al-Jami'", divineTranslation:'The Gatherer — Inner Union',
+    cosmology:'Humanity · Union of elemental quadrature and opposites',
     star:'Algenib γ Peg, Alpheratz α And', starClass:'',
     element:'water',
     nature:'benef', rating:'highest', ratingLabel:'HIGHEST ✦✦✦',
@@ -805,7 +833,8 @@ const MANSIONS = [
   {
     num:28, name:'Al-Batn al-Hut', deg:"Pis 17°8'–30°",
     letter:'غ', letterLatin:'Ghayn',
-    divineName:'Al-Ghafur', divineTranslation:'The Forgiving',
+    divineName:"Rafi' al-Darajat", divineTranslation:'The Elevating of Degrees',
+    cosmology:'The Complete Human Being · Freedom through all healing',
     star:'Mirach β And, Alrescha α Psc', starClass:'',
     element:'water',
     nature:'benef', rating:'prime', ratingLabel:'Prime ✦✦',
@@ -922,6 +951,7 @@ function render() {
             <span class="letter-latin">${m.letterLatin}</span>
             <span class="divine-name">${m.divineName} <span>· ${m.divineTranslation}</span></span>
           </div>
+          ${m.cosmology ? `<span class="divine-cosmology">↳ ${m.cosmology}</span>` : ''}
           ${starHtml}
         </div>
         <div class="tags">${tagHtml}</div>
