@@ -44,6 +44,26 @@
   --shadow:     0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2);
 }
 
+/* ─── SR-ONLY UTILITY ──────────────────────────────────────── */
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ─── SKIP LINK ────────────────────────────────────────────── */
+.skip-link {
+  position: fixed; top: 8px; left: 8px; z-index: 999;
+  background: var(--gold); color: var(--bg);
+  font-family: 'Cormorant Garamond', serif; font-size: 13px;
+  font-weight: 400; letter-spacing: .06em;
+  padding: 8px 16px; border-radius: 2px;
+  transform: translateY(-120%); transition: transform .2s;
+  text-decoration: none;
+}
+.skip-link:focus { transform: translateY(0); outline: 2px solid var(--ink-1); outline-offset: 2px; }
+
+/* ─── REDUCED MOTION ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
 html { scroll-behavior: smooth; }
 body {
   font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
@@ -74,7 +94,7 @@ header {
   color: var(--ink-1); flex-shrink: 0;
   transition: color .4s;
 }
-.hdr-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.hdr-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; min-height: 44px; }
 .cciaf-wordmark {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 12px; font-weight: 300;
@@ -144,6 +164,8 @@ h1 em { color: var(--gold); font-style: normal; }
   padding: 9px 16px; cursor: pointer;
   color: var(--ink-3); font-size: 16px;
   font-family: inherit; line-height: 1;
+  min-height: 44px; min-width: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
   transition: background .12s, color .12s, opacity .12s;
 }
 .mnav-btn:hover:not(:disabled) { background: var(--bg-alt); color: var(--ink-1); }
@@ -171,7 +193,7 @@ h1 em { color: var(--gold); font-style: normal; }
 .stat-label {
   font-family: 'Cormorant Garamond', serif;
   font-size: 11px; font-weight: 300;
-  color: var(--ink-4); text-transform: uppercase;
+  color: var(--ink-3); text-transform: uppercase;
   letter-spacing: .14em; margin-bottom: 6px;
 }
 .stat-val {
@@ -190,6 +212,7 @@ h1 em { color: var(--gold); font-style: normal; }
   border: 1px solid var(--border);
   background: var(--surface); color: var(--ink-3);
   cursor: pointer; transition: all .12s;
+  min-height: 44px; display: inline-flex; align-items: center;
 }
 .fbtn:hover { background: var(--bg-alt); border-color: var(--ink-4); color: var(--ink-1); }
 .fbtn.active { background: var(--ink-1); color: var(--bg); border-color: var(--ink-1); }
@@ -205,11 +228,13 @@ h1 em { color: var(--gold); font-style: normal; }
   outline: none; transition: border-color .12s, background .4s;
 }
 .search-wrap input:focus { border-color: var(--gold); }
+.search-wrap input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.search-wrap input:focus:not(:focus-visible) { outline: none; }
 .search-wrap input::placeholder { color: var(--ink-4); font-style: italic; }
 .count-label {
   font-family: 'Cormorant Garamond', serif;
   font-size: 12px; font-weight: 300; letter-spacing: .08em;
-  color: var(--ink-4); margin-bottom: 12px; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 12px; text-transform: uppercase;
 }
 
 /* ─── TABLE ────────────────────────────────────────────────── */
@@ -221,7 +246,7 @@ h1 em { color: var(--gold); font-style: normal; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 thead th {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  font-size: 10px; font-weight: 300; color: var(--ink-3);
   text-align: left; padding: 11px 14px;
   background: var(--bg-alt); border-bottom: 1px solid var(--border);
   text-transform: uppercase; letter-spacing: .14em; white-space: nowrap;
@@ -242,7 +267,7 @@ td { padding: 12px 14px; vertical-align: top; }
 }
 .dates-month {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  font-size: 10px; font-weight: 300; color: var(--ink-3);
   text-transform: uppercase; letter-spacing: .10em;
   display: block; margin-top: 1px;
 }
@@ -252,7 +277,7 @@ td { padding: 12px 14px; vertical-align: top; }
 .m-header { display: flex; align-items: baseline; gap: 8px; }
 .m-num {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  font-size: 10px; font-weight: 300; color: var(--ink-3);
   letter-spacing: .06em; text-transform: uppercase;
 }
 .m-name {
@@ -261,7 +286,7 @@ td { padding: 12px 14px; vertical-align: top; }
 }
 .m-deg {
   font-family: 'EB Garamond', serif;
-  font-size: 12px; color: var(--ink-4); margin-top: 2px;
+  font-size: 12px; color: var(--ink-3); margin-top: 2px;
   font-style: italic;
 }
 .m-meta { margin-top: 7px; display: flex; flex-direction: column; gap: 4px; }
@@ -273,7 +298,7 @@ td { padding: 12px 14px; vertical-align: top; }
 }
 .letter-latin {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  font-size: 10px; font-weight: 300; color: var(--ink-3);
   letter-spacing: .06em; text-transform: uppercase;
 }
 .divine-name {
@@ -283,7 +308,7 @@ td { padding: 12px 14px; vertical-align: top; }
 .divine-name span { color: var(--ink-4); font-style: normal; }
 .divine-cosmology {
   font-family: 'EB Garamond', serif;
-  font-size: 12px; color: var(--ink-4);
+  font-size: 12px; color: var(--ink-3);
   display: block; margin-top: 1px; line-height: 1.4;
 }
 .star-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
@@ -312,9 +337,9 @@ td { padding: 12px 14px; vertical-align: top; }
 /* ─── RATINGS ──────────────────────────────────────────────── */
 .rating { font-family: 'Cormorant Garamond', serif; white-space: nowrap; }
 .r-highest { font-size: 13px; font-weight: 500; color: var(--gold); text-transform: uppercase; letter-spacing: .06em; }
-.r-prime   { font-size: 14px; font-weight: 400; color: var(--gold-mid); }
+.r-prime   { font-size: 14px; font-weight: 400; color: var(--gold); }
 .r-good    { font-size: 14px; font-weight: 300; color: var(--ink-2); }
-.r-caution { font-size: 13px; font-weight: 300; color: var(--ink-3); font-style: italic; }
+.r-caution { font-size: 13px; font-weight: 400; color: var(--ink-3); letter-spacing: .02em; }
 .r-avoid   { font-size: 13px; font-weight: 400; color: var(--ink-2); }
 .r-veto    { font-size: 11px; font-weight: 500; color: var(--ink-1); text-transform: uppercase; letter-spacing: .10em; }
 
@@ -376,7 +401,7 @@ td { padding: 12px 14px; vertical-align: top; }
 .sf-col h4 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 12px; font-weight: 300; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--ink-4); margin-bottom: 14px;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px;
 }
 .sf-col ul { list-style: none; }
 .sf-col li { padding: 3px 0; font-size: 14px; }
@@ -392,7 +417,7 @@ td { padding: 12px 14px; vertical-align: top; }
   display: flex; justify-content: space-between; align-items: flex-start;
   gap: 24px; flex-wrap: wrap;
   font-family: 'Cormorant Garamond', serif;
-  font-size: 12px; font-weight: 300; letter-spacing: .04em; color: var(--ink-4);
+  font-size: 12px; font-weight: 300; letter-spacing: .04em; color: var(--ink-3);
 }
 .sf-disc {
   max-width: 520px; line-height: 1.6; font-style: italic;
@@ -408,6 +433,7 @@ td { padding: 12px 14px; vertical-align: top; }
 </style>
 </head>
 <body>
+<a href="#mansion-table" class="skip-link">Skip to mansion table</a>
 
 <header>
   <span class="brand">28 Lunar Mansions</span>
@@ -424,41 +450,43 @@ td { padding: 12px 14px; vertical-align: top; }
   <p class="page-sub">Abu Ma'shar degree-based mansion framework · tropical month view · moon phase calculated automatically</p>
 
   <div class="month-nav" aria-label="Month navigation">
-    <button class="mnav-btn" id="prev-btn" onclick="changeMonth(-1)">&#8592;</button>
+    <button class="mnav-btn" id="prev-btn" onclick="changeMonth(-1)" aria-label="Previous month">&#8592;</button>
     <button class="mnav-btn" id="today-btn" onclick="goToday()">Today</button>
     <div class="mnav-label" id="month-label">— — —</div>
-    <button class="mnav-btn" id="next-btn" onclick="changeMonth(1)">&#8594;</button>
+    <button class="mnav-btn" id="next-btn" onclick="changeMonth(1)" aria-label="Next month">&#8594;</button>
   </div>
 
   <div class="stats-grid" id="stats-grid"></div>
 
-  <div class="filter-row" id="filter-row">
-    <button class="fbtn active" onclick="setFilter('all', this)">All 28</button>
-    <button class="fbtn" onclick="setFilter('highest', this)">Highest ✦✦✦</button>
-    <button class="fbtn" onclick="setFilter('prime', this)">Prime</button>
-    <button class="fbtn" onclick="setFilter('good', this)">Good</button>
-    <button class="fbtn" onclick="setFilter('caution', this)">Caution</button>
-    <button class="fbtn" onclick="setFilter('avoid', this)">Avoid</button>
-    <button class="fbtn" onclick="setFilter('veto', this)">Vetoes</button>
+  <div class="filter-row" id="filter-row" role="group" aria-label="Filter mansions by rating">
+    <button class="fbtn active" onclick="setFilter('all', this)" aria-pressed="true">All 28</button>
+    <button class="fbtn" onclick="setFilter('highest', this)" aria-pressed="false">Highest ✦✦✦</button>
+    <button class="fbtn" onclick="setFilter('prime', this)" aria-pressed="false">Prime</button>
+    <button class="fbtn" onclick="setFilter('good', this)" aria-pressed="false">Good</button>
+    <button class="fbtn" onclick="setFilter('caution', this)" aria-pressed="false">Caution</button>
+    <button class="fbtn" onclick="setFilter('avoid', this)" aria-pressed="false">Avoid</button>
+    <button class="fbtn" onclick="setFilter('veto', this)" aria-pressed="false">Vetoes</button>
   </div>
 
   <div class="search-wrap">
+    <label for="search" class="sr-only">Search mansions by name, sign, star, divine name, or cosmology</label>
     <input type="text" id="search" placeholder="Search name, sign, star, divine name, cosmology…" oninput="render()">
   </div>
   <p class="count-label" id="count-label">Showing all 28 mansions</p>
 
   <div class="table-wrap">
-    <table>
+    <table id="mansion-table" aria-label="Lunar mansion calendar">
+      <caption class="sr-only" id="table-caption">28 Lunar Mansions</caption>
       <thead>
         <tr>
-          <th style="width:80px">Moon dates</th>
-          <th style="width:320px">Mansion</th>
-          <th style="width:120px">Nature</th>
-          <th style="width:150px">Electional rating</th>
-          <th style="width:120px">Moon phase</th>
+          <th scope="col" style="width:80px">Moon dates</th>
+          <th scope="col" style="width:320px">Mansion</th>
+          <th scope="col" style="width:120px">Nature</th>
+          <th scope="col" style="width:150px">Electional rating</th>
+          <th scope="col" style="width:120px">Moon phase</th>
         </tr>
       </thead>
-      <tbody id="tbody"></tbody>
+      <tbody id="tbody" aria-live="polite" aria-atomic="false"></tbody>
     </table>
   </div>
 
@@ -698,6 +726,8 @@ function render() {
 
   document.getElementById('count-label').textContent =
     rows.length === 28 ? 'Showing all 28 mansions' : `Showing ${rows.length} of 28`;
+  const cap = document.getElementById('table-caption');
+  if (cap) cap.textContent = `28 Lunar Mansions — ${MONTH_NAMES[month-1]} ${year}`;
 
   const mShort = MONTH_SHORT[month-1];
   document.getElementById('tbody').innerHTML = rows.map(m => {
@@ -708,10 +738,10 @@ function render() {
     const starClass = m.starClass || '';
     const starTitle = { royal:'Royal Star', benefic:'Benefic Star', 'malefic-star':'Malefic Star', void:'Void region' }[starClass] || '';
     const phaseHtml = phase
-      ? `<span class="phase-icon">${phase.icon}</span>
+      ? `<span class="phase-icon" aria-hidden="true">${phase.icon}</span>
          <span class="phase-label">${phase.label}</span>
-         <span class="phase-dir">${phase.waxing ? '↑ Waxing' : '↓ Waning'}</span>`
-      : '<span style="color:var(--ink-4);font-size:11px;">—</span>';
+         <span class="phase-dir" aria-label="${phase.waxing ? 'Waxing' : 'Waning'}">${phase.waxing ? '↑ Waxing' : '↓ Waning'}</span>`
+      : '<span style="color:var(--ink-3);font-size:11px;" aria-label="No date this month">—</span>';
     return `
       <tr class="${m.rating==='veto'?'row-veto':''}">
         <td><div class="dates-cell">${dStr
@@ -722,7 +752,7 @@ function render() {
           <div class="m-deg">${m.deg}</div>
           <div class="m-meta">
             <div class="m-letter-row">
-              <span class="arabic-letter">${m.letter}</span>
+              <span class="arabic-letter" lang="ar" dir="rtl">${m.letter}</span>
               <span class="letter-latin">${m.letterLatin}</span>
               <span class="divine-name">${m.divineName} <span>· ${m.divineTranslation}</span></span>
             </div>
@@ -743,8 +773,12 @@ function render() {
 /* ─── CONTROLS ──────────────────────────────────────────────── */
 function setFilter(type, btn) {
   activeFilter = type;
-  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.fbtn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
   btn.classList.add('active');
+  btn.setAttribute('aria-pressed', 'true');
   render();
 }
 function changeMonth(delta) {
