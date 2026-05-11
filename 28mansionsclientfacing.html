@@ -1,453 +1,427 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>28 Lunar Mansions — Client Reference</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>28 Lunar Mansions — CCIAF · Layer III · Action</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #FAF9F6;
-    --surface: #FFFFFF;
-    --surface-2: #F3F1EC;
-    --border: #E8E5DE;
-    --border-strong: #C9C5BB;
-    --text-1: #1C1814;
-    --text-2: #6B6560;
-    --text-3: #A09B95;
-    --accent: #CC4E1E;
-    --c-highest: #0D7A5F;
-    --c-prime: #1A6B35;
-    --c-good: #8A5F00;
-    --c-caution: #B04A0A;
-    --c-avoid: #AA2020;
-    --c-veto: #7A0F0F;
-    --badge-benef-bg: #F0FAF4; --badge-benef-text: #16623A; --badge-benef-bd: #BAF0CE;
-    --badge-mixed-bg: #FEF8EC; --badge-mixed-text: #8A5F00; --badge-mixed-bd: #FAD97A;
-    --badge-malef-bg: #FEF2F2; --badge-malef-text: #AA2020; --badge-malef-bd: #FAC4C4;
-    --badge-worst-bg: #FEE8E8; --badge-worst-text: #7A0F0F; --badge-worst-bd: #F6AAAA;
-    --star-royal-bg: #FFFBEC; --star-royal-bd: #F5D87A; --star-royal-text: #7A5800;
-    --star-benef-bg: #F0FAF4; --star-benef-bd: #BAF0CE; --star-benef-text: #16623A;
-    --star-malef-bg: #FEF2F2; --star-malef-bd: #FAC4C4; --star-malef-text: #AA2020;
-    --star-void-bg: #F3F1EC; --star-void-bd: #E8E5DE; --star-void-text: #6B6560;
-    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
-    color: var(--text-1);
-    min-height: 100vh;
-    padding: 2.5rem 2rem 4rem;
-    font-size: 14px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
+/* ─── TOKENS ───────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:         #F9F6F0;
+  --bg-alt:     #F2EDE3;
+  --surface:    #FFFFFF;
+  --border:     #DDD8CE;
+  --ink-1:      #1A1510;
+  --ink-2:      #3D3830;
+  --ink-3:      #6B6358;
+  --ink-4:      #A09890;
+  --gold:       #8B6510;
+  --gold-mid:   #B8922A;
+  --gold-light: #D4AE60;
+  --nav-bg:     rgba(249,246,240,.95);
+  --tog-bg:     #DDD8CE;
+  --tog-knob:   #8B6510;
+  --shadow:     0 1px 3px rgba(26,21,16,.08),0 4px 16px rgba(26,21,16,.05);
+}
+[data-theme="dark"] {
+  --bg:         #131008;
+  --bg-alt:     #1B170D;
+  --surface:    #1E1A10;
+  --border:     #2E2918;
+  --ink-1:      #F0EAD8;
+  --ink-2:      #C0B89E;
+  --ink-3:      #7A7260;
+  --ink-4:      #4A4438;
+  --gold:       #C8A03A;
+  --gold-mid:   #A07818;
+  --gold-light: #E0BC70;
+  --nav-bg:     rgba(19,16,8,.95);
+  --tog-bg:     #2E2918;
+  --tog-knob:   #C8A03A;
+  --shadow:     0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2);
+}
 
-  .page-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.75rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .header-left h1 {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-    margin-bottom: 4px;
-  }
-  .header-left p {
-    font-size: 13px;
-    color: var(--text-3);
-    max-width: 72ch;
-  }
-  .wordmark {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-3);
-    white-space: nowrap;
-  }
-  .wordmark-dot {
-    width: 20px;
-    height: 20px;
-    background: var(--accent);
-    border-radius: 50%;
-    opacity: .85;
-    flex: 0 0 auto;
-  }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--ink-2);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .4s, color .4s;
+}
+a { color: var(--gold); text-decoration: none; transition: color .2s; }
+a:hover { color: var(--ink-1); }
 
-  .month-nav {
-    display: flex;
-    align-items: center;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-    width: fit-content;
-  }
-  .mnav-btn {
-    background: none;
-    border: none;
-    padding: 9px 16px;
-    cursor: pointer;
-    color: var(--text-2);
-    font-size: 16px;
-    transition: background .12s, color .12s, opacity .12s;
-    font-family: inherit;
-    line-height: 1;
-  }
-  .mnav-btn:hover:not(:disabled) {
-    background: var(--surface-2);
-    color: var(--text-1);
-  }
-  .mnav-btn:disabled {
-    opacity: .35;
-    cursor: not-allowed;
-  }
-  .mnav-label {
-    padding: 9px 20px;
-    font-size: 14px;
-    font-weight: 500;
-    min-width: 168px;
-    text-align: center;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-  }
+/* ─── NAV ──────────────────────────────────────────────────── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  background: var(--nav-bg); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  height: 58px; padding: 0 clamp(20px,5vw,72px);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  transition: background .4s, border-color .4s;
+}
+.brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 15px; font-weight: 300;
+  letter-spacing: .20em; text-transform: uppercase;
+  color: var(--ink-1); flex-shrink: 0;
+  transition: color .4s;
+}
+.hdr-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.cciaf-wordmark {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 12px; font-weight: 300;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+  transition: color .2s;
+}
+.cciaf-wordmark:hover { color: var(--ink-1); }
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 14px 18px;
-  }
-  .stat-label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-3);
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    margin-bottom: 6px;
-  }
-  .stat-val {
-    font-size: 28px;
-    font-weight: 600;
-  }
-  .sv-safe { color: var(--c-prime); }
-  .sv-avoid { color: var(--c-avoid); }
-  .sv-caution { color: var(--c-good); }
-  .sv-veto { color: var(--c-veto); }
+/* ─── THEME TOGGLE ─────────────────────────────────────────── */
+.tog {
+  width: 46px; height: 26px; border-radius: 13px;
+  background: var(--tog-bg); border: 1px solid var(--border);
+  cursor: pointer; position: relative; flex-shrink: 0;
+  transition: background .35s, border-color .35s;
+  -webkit-appearance: none; appearance: none;
+}
+.tog::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--tog-knob);
+  transition: transform .3s ease, background .35s;
+}
+[data-theme="dark"] .tog::after { transform: translateX(20px); }
 
-  .filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 1rem;
-  }
-  .fbtn {
-    font-size: 12px;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-2);
-    cursor: pointer;
-    transition: all .12s;
-    font-family: inherit;
-  }
-  .fbtn:hover {
-    background: var(--surface-2);
-    border-color: var(--border-strong);
-    color: var(--text-1);
-  }
-  .fbtn.active {
-    background: var(--text-1);
-    color: #FFF;
-    border-color: var(--text-1);
-  }
+/* ─── PAGE ─────────────────────────────────────────────────── */
+main {
+  padding: 80px clamp(20px,5vw,72px) 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
 
-  .search-wrap { margin-bottom: 0.85rem; }
-  .search-wrap input {
-    font-family: inherit;
-    font-size: 13px;
-    padding: 8px 14px;
-    width: 100%;
-    max-width: 340px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    color: var(--text-1);
-    outline: none;
-    transition: border-color .12s, box-shadow .12s;
-  }
-  .search-wrap input:focus {
-    border-color: var(--border-strong);
-    box-shadow: 0 0 0 3px rgba(28,24,20,.06);
-  }
-  .search-wrap input::placeholder { color: var(--text-3); }
-  .count-label {
-    font-size: 12px;
-    color: var(--text-3);
-    margin-bottom: 12px;
-  }
+/* ─── EYEBROW ──────────────────────────────────────────────── */
+.eyebrow {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 12px; font-weight: 300;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold); margin: 28px 0 10px;
+}
+.eyebrow-rule {
+  width: 50px; height: 1.5px;
+  background: var(--gold); margin-bottom: 18px;
+}
+h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 300; color: var(--ink-1);
+  line-height: 1.2; margin-bottom: 6px;
+}
+h1 em { color: var(--gold); font-style: normal; }
+.page-sub {
+  font-size: 15px; color: var(--ink-3);
+  font-family: 'EB Garamond', serif;
+  font-style: italic; margin-bottom: 2rem;
+}
 
-  .table-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    overflow-x: auto;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  thead th {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-3);
-    text-align: left;
-    padding: 11px 12px;
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--border);
-    text-transform: uppercase;
-    letter-spacing: .07em;
-    white-space: nowrap;
-  }
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background .08s;
-  }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: #FDFCF9; }
-  tbody tr.row-veto { background: #FEF9F9; }
-  tbody tr.row-veto:hover { background: #FEF5F5; }
-  td { padding: 11px 12px; vertical-align: top; }
+/* ─── MONTH NAV ────────────────────────────────────────────── */
+.month-nav {
+  display: flex; align-items: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 2px; overflow: hidden;
+  margin-bottom: 1.5rem; width: fit-content;
+  transition: background .4s, border-color .4s;
+}
+.mnav-btn {
+  background: none; border: none;
+  padding: 9px 16px; cursor: pointer;
+  color: var(--ink-3); font-size: 16px;
+  font-family: inherit; line-height: 1;
+  transition: background .12s, color .12s, opacity .12s;
+}
+.mnav-btn:hover:not(:disabled) { background: var(--bg-alt); color: var(--ink-1); }
+.mnav-btn:disabled { opacity: .35; cursor: not-allowed; }
+.mnav-label {
+  padding: 9px 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; font-weight: 300; letter-spacing: .06em;
+  min-width: 168px; text-align: center;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  color: var(--ink-1);
+}
 
-  .dates-cell { white-space: nowrap; }
-  .dates-day {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-1);
-    display: block;
-    line-height: 1.2;
-  }
-  .dates-month {
-    font-size: 10px;
-    color: var(--text-3);
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    display: block;
-    margin-top: 1px;
-  }
-  .dates-none {
-    font-size: 13px;
-    color: var(--text-3);
-  }
+/* ─── STATS ────────────────────────────────────────────────── */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 12px; margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 2px; padding: 14px 18px;
+  transition: background .4s, border-color .4s;
+}
+.stat-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; font-weight: 300;
+  color: var(--ink-4); text-transform: uppercase;
+  letter-spacing: .14em; margin-bottom: 6px;
+}
+.stat-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px; font-weight: 300;
+  color: var(--ink-1);
+}
+.stat-val.gold { color: var(--gold); }
 
-  .m-header {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-  }
-  .m-num {
-    font-size: 10px;
-    color: var(--text-3);
-    font-variant-numeric: tabular-nums;
-    font-weight: 500;
-  }
-  .m-name {
-    font-weight: 600;
-    font-size: 13px;
-    color: var(--text-1);
-  }
-  .m-deg {
-    font-size: 11px;
-    color: var(--text-3);
-    margin-top: 2px;
-  }
-  .m-meta {
-    margin-top: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .m-letter-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .arabic-letter {
-    font-size: 18px;
-    line-height: 1;
-    color: var(--accent);
-    font-family: 'Amiri', 'Arabic Typesetting', 'Traditional Arabic', serif;
-    direction: rtl;
-  }
-  .letter-latin {
-    font-size: 10px;
-    color: var(--text-3);
-    font-weight: 500;
-    letter-spacing: .03em;
-  }
-  .divine-name {
-    font-size: 11px;
-    color: var(--text-2);
-    font-style: italic;
-  }
-  .divine-name span {
-    color: var(--text-3);
-    font-style: normal;
-  }
-  .divine-cosmology {
-    font-size: 10px;
-    color: var(--text-3);
-    display: block;
-    margin-top: 2px;
-    line-height: 1.35;
-  }
-  .star-row {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-wrap: wrap;
-    margin-top: 2px;
-  }
-  .star-tag {
-    font-size: 10px;
-    padding: 1px 6px;
-    border-radius: 4px;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    color: var(--text-2);
-    white-space: nowrap;
-  }
-  .star-tag.royal {
-    background: var(--star-royal-bg);
-    border-color: var(--star-royal-bd);
-    color: var(--star-royal-text);
-    font-weight: 600;
-  }
-  .star-tag.benefic {
-    background: var(--star-benef-bg);
-    border-color: var(--star-benef-bd);
-    color: var(--star-benef-text);
-    font-weight: 600;
-  }
-  .star-tag.malefic-star {
-    background: var(--star-malef-bg);
-    border-color: var(--star-malef-bd);
-    color: var(--star-malef-text);
-    font-weight: 600;
-  }
-  .star-tag.void {
-    background: var(--star-void-bg);
-    border-color: var(--star-void-bd);
-    color: var(--star-void-text);
-    font-style: italic;
-  }
+/* ─── FILTERS ──────────────────────────────────────────────── */
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
+.fbtn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; font-weight: 300; letter-spacing: .10em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 2px;
+  border: 1px solid var(--border);
+  background: var(--surface); color: var(--ink-3);
+  cursor: pointer; transition: all .12s;
+}
+.fbtn:hover { background: var(--bg-alt); border-color: var(--ink-4); color: var(--ink-1); }
+.fbtn.active { background: var(--ink-1); color: var(--bg); border-color: var(--ink-1); }
+[data-theme="dark"] .fbtn.active { background: var(--gold); color: var(--bg); border-color: var(--gold); }
 
-  .badge {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 500;
-    padding: 3px 9px;
-    border-radius: 20px;
-    border: 1px solid;
-    white-space: nowrap;
-  }
-  .b-benef { background: var(--badge-benef-bg); color: var(--badge-benef-text); border-color: var(--badge-benef-bd); }
-  .b-mixed { background: var(--badge-mixed-bg); color: var(--badge-mixed-text); border-color: var(--badge-mixed-bd); }
-  .b-malef { background: var(--badge-malef-bg); color: var(--badge-malef-text); border-color: var(--badge-malef-bd); }
-  .b-worst { background: var(--badge-worst-bg); color: var(--badge-worst-text); border-color: var(--badge-worst-bd); font-weight: 600; }
+/* ─── SEARCH ───────────────────────────────────────────────── */
+.search-wrap { margin-bottom: .75rem; }
+.search-wrap input {
+  font-family: 'EB Garamond', serif; font-size: 15px;
+  padding: 8px 14px; width: 100%; max-width: 360px;
+  border: 1px solid var(--border); border-radius: 2px;
+  background: var(--surface); color: var(--ink-1);
+  outline: none; transition: border-color .12s, background .4s;
+}
+.search-wrap input:focus { border-color: var(--gold); }
+.search-wrap input::placeholder { color: var(--ink-4); font-style: italic; }
+.count-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; font-weight: 300; letter-spacing: .08em;
+  color: var(--ink-4); margin-bottom: 12px; text-transform: uppercase;
+}
 
-  .rating {
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  .r-highest { color: var(--c-highest); }
-  .r-prime { color: var(--c-prime); }
-  .r-good { color: var(--c-good); }
-  .r-caution { color: var(--c-caution); }
-  .r-avoid { color: var(--c-avoid); }
-  .r-veto { color: var(--c-veto); }
+/* ─── TABLE ────────────────────────────────────────────────── */
+.table-wrap {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 2px; overflow: hidden; overflow-x: auto;
+  transition: background .4s, border-color .4s;
+}
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead th {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  text-align: left; padding: 11px 14px;
+  background: var(--bg-alt); border-bottom: 1px solid var(--border);
+  text-transform: uppercase; letter-spacing: .14em; white-space: nowrap;
+  transition: background .4s;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background .08s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg-alt); }
+tbody tr.row-veto { border-left: 2px solid var(--ink-1); }
+td { padding: 12px 14px; vertical-align: top; }
 
-  .note-box {
-    margin-top: 1.25rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.15rem 1.25rem;
-  }
-  .note-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-3);
-    text-transform: uppercase;
-    letter-spacing: .07em;
-    margin-bottom: 8px;
-  }
-  .note-box p {
-    color: var(--text-2);
-    font-size: 13px;
-    line-height: 1.6;
-  }
+/* ─── DATE CELL ────────────────────────────────────────────── */
+.dates-cell { white-space: nowrap; }
+.dates-day {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 400; color: var(--ink-1);
+  display: block; line-height: 1.2;
+}
+.dates-month {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  text-transform: uppercase; letter-spacing: .10em;
+  display: block; margin-top: 1px;
+}
+.dates-none { font-size: 13px; color: var(--ink-4); }
 
-  .disclaimer {
-    margin-top: 1rem;
-    font-size: 12px;
-    color: var(--text-3);
-    line-height: 1.6;
-  }
+/* ─── MANSION CELL ─────────────────────────────────────────── */
+.m-header { display: flex; align-items: baseline; gap: 8px; }
+.m-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.m-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; font-weight: 400; color: var(--ink-1);
+}
+.m-deg {
+  font-family: 'EB Garamond', serif;
+  font-size: 12px; color: var(--ink-4); margin-top: 2px;
+  font-style: italic;
+}
+.m-meta { margin-top: 7px; display: flex; flex-direction: column; gap: 4px; }
+.m-letter-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.arabic-letter {
+  font-size: 20px; line-height: 1; color: var(--gold);
+  font-family: 'Amiri', 'Arabic Typesetting', 'Traditional Arabic', serif;
+  direction: rtl;
+}
+.letter-latin {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.divine-name {
+  font-family: 'EB Garamond', serif;
+  font-size: 12px; color: var(--ink-3); font-style: italic;
+}
+.divine-name span { color: var(--ink-4); font-style: normal; }
+.divine-cosmology {
+  font-family: 'EB Garamond', serif;
+  font-size: 12px; color: var(--ink-4);
+  display: block; margin-top: 1px; line-height: 1.4;
+}
+.star-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
+.star-tag {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; font-weight: 300; letter-spacing: .06em;
+  padding: 1px 7px; border-radius: 2px;
+  border: 1px solid var(--border); color: var(--ink-3);
+  white-space: nowrap; text-transform: uppercase;
+}
+.star-tag.royal { border-color: var(--gold); color: var(--gold); }
+.star-tag.benefic { border-color: var(--gold-mid); color: var(--gold-mid); }
+.star-tag.malefic-star { border-color: var(--ink-2); color: var(--ink-2); font-weight: 400; }
+.star-tag.void { color: var(--ink-4); font-style: italic; }
 
-  #topBtn {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    display: none;
-    z-index: 50;
-    border-radius: 999px;
-    padding: 10px 14px;
-    box-shadow: 0 10px 25px rgba(28,24,20,.12);
-  }
+/* ─── NATURE ───────────────────────────────────────────────── */
+.nature-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; display: block;
+}
+.nature-benef { color: var(--ink-3); font-weight: 300; }
+.nature-mixed { color: var(--ink-3); font-style: italic; font-weight: 300; }
+.nature-malef { color: var(--ink-2); font-weight: 400; }
+.nature-worst { color: var(--ink-1); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; font-size: 11px; }
 
-  .wordmark, .wordmark:visited {
-    text-decoration: none;
-    color: var(--text-3);
-  }
+/* ─── RATINGS ──────────────────────────────────────────────── */
+.rating { font-family: 'Cormorant Garamond', serif; white-space: nowrap; }
+.r-highest { font-size: 13px; font-weight: 500; color: var(--gold); text-transform: uppercase; letter-spacing: .06em; }
+.r-prime   { font-size: 14px; font-weight: 400; color: var(--gold-mid); }
+.r-good    { font-size: 14px; font-weight: 300; color: var(--ink-2); }
+.r-caution { font-size: 13px; font-weight: 300; color: var(--ink-3); font-style: italic; }
+.r-avoid   { font-size: 13px; font-weight: 400; color: var(--ink-2); }
+.r-veto    { font-size: 11px; font-weight: 500; color: var(--ink-1); text-transform: uppercase; letter-spacing: .10em; }
 
-  @media (max-width: 720px) {
-    body { padding: 1.25rem 1rem 3rem; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  }
+/* ─── MOON PHASE ───────────────────────────────────────────── */
+.phase-cell { display: flex; flex-direction: column; gap: 2px; }
+.phase-icon { font-size: 16px; line-height: 1; }
+.phase-label { font-family: 'EB Garamond', serif; font-size: 13px; color: var(--ink-2); }
+.phase-dir {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; font-weight: 300; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-4);
+}
+
+/* ─── NOTE BOX ─────────────────────────────────────────────── */
+.note-box {
+  margin-top: 1.5rem;
+  background: var(--bg-alt); border: 1px solid var(--border);
+  border-radius: 2px; padding: 1.25rem 1.5rem;
+  transition: background .4s, border-color .4s;
+}
+.note-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px; font-weight: 300; color: var(--ink-4);
+  text-transform: uppercase; letter-spacing: .14em; margin-bottom: 8px;
+}
+.note-box p {
+  font-family: 'EB Garamond', serif;
+  color: var(--ink-3); font-size: 14px;
+  line-height: 1.7; font-style: italic;
+}
+
+/* ─── SCROLL TOP ───────────────────────────────────────────── */
+.st {
+  position: fixed; bottom: 28px; right: 22px; z-index: 400;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--shadow);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s, background .2s, border-color .4s;
+  color: var(--ink-3); font-size: 16px;
+  font-family: 'EB Garamond', serif;
+}
+.st.on { opacity: 1; pointer-events: all; }
+.st:hover { background: var(--bg-alt); color: var(--gold); }
+
+/* ─── FOOTER ───────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 48px clamp(20px,5vw,72px) 32px;
+  background: var(--bg-alt);
+  transition: background .4s, border-color .4s;
+}
+.sf-grid {
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 36px; align-items: flex-start;
+  max-width: 900px; margin: 0 auto 28px;
+}
+.sf-col h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; font-weight: 300; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink-4); margin-bottom: 14px;
+}
+.sf-col ul { list-style: none; }
+.sf-col li { padding: 3px 0; font-size: 14px; }
+.sf-col a { color: var(--ink-3); text-decoration: none; transition: color .2s; }
+.sf-col a:hover { color: var(--gold); }
+.sf-body { font-family: 'EB Garamond', serif; font-size: 14px; color: var(--ink-3); line-height: 1.65; }
+.sf-sub { font-family: 'EB Garamond', serif; font-size: 13px; color: var(--ink-4); font-style: italic; margin-top: 10px; }
+.sf-sub a { color: var(--gold); text-decoration: none; }
+.sf-sub a:hover { color: var(--ink-1); }
+.sf-bottom {
+  border-top: 1px solid var(--border); padding-top: 18px;
+  max-width: 900px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 24px; flex-wrap: wrap;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; font-weight: 300; letter-spacing: .04em; color: var(--ink-4);
+}
+.sf-disc {
+  max-width: 520px; line-height: 1.6; font-style: italic;
+  font-family: 'EB Garamond', serif; font-size: 13px;
+}
+
+/* ─── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 720px) {
+  main { padding: 76px 1.25rem 3rem; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .sf-grid { grid-template-columns: 1fr; gap: 24px; }
+}
 </style>
 </head>
 <body>
-  <div class="page-header">
-    <div class="header-left">
-      <h1>28 Lunar Mansions — Client Reference</h1>
-      <p>Abu Ma'shar degree-based mansion framework · tropical month view · moon phase labels calculated automatically · session-specific configuration happens during engagement</p>
-    </div>
-    <a class="wordmark" href="https://cciaf.minhaaj.com" target="_blank" rel="noopener noreferrer"><div class="wordmark-dot"></div>CCIAF</a>
+
+<header>
+  <span class="brand">28 Lunar Mansions</span>
+  <div class="hdr-right">
+    <a class="cciaf-wordmark" href="https://cciaf.minhaaj.com" target="_blank" rel="noopener">CCIAF</a>
+    <button class="tog" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light/dark mode"></button>
   </div>
+</header>
+
+<main>
+  <p class="eyebrow">CCIAF · Layer III · Action</p>
+  <div class="eyebrow-rule"></div>
+  <h1>Moon election calendar for <em>28 Lunar Mansions</em></h1>
+  <p class="page-sub">Abu Ma'shar degree-based mansion framework · tropical month view · moon phase calculated automatically</p>
 
   <div class="month-nav" aria-label="Month navigation">
     <button class="mnav-btn" id="prev-btn" onclick="changeMonth(-1)">&#8592;</button>
@@ -477,11 +451,11 @@
     <table>
       <thead>
         <tr>
-          <th style="width:72px">Moon dates</th>
-          <th style="width:300px">Mansion</th>
-          <th style="width:115px">Nature</th>
-          <th style="width:145px">Electional rating</th>
-          <th style="width:110px">Moon phase</th>
+          <th style="width:80px">Moon dates</th>
+          <th style="width:320px">Mansion</th>
+          <th style="width:120px">Nature</th>
+          <th style="width:150px">Electional rating</th>
+          <th style="width:120px">Moon phase</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -490,458 +464,102 @@
 
   <div class="note-box">
     <div class="note-title">Use note</div>
-    <p class="disclaimer">CCIAF is a structured interpretive framework drawing on multiple intellectual traditions. It is decision-support, not prediction. It is not a substitute for medical, psychiatric, legal, or financial advice.</p>
+    <p>CCIAF is a structured interpretive framework drawing on multiple intellectual traditions. It is decision-support, not prediction. It is not a substitute for medical, psychiatric, legal, or financial advice.</p>
   </div>
+</main>
 
-  <footer style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;color:var(--text-3);font-size:12px;">
-    <span>Origin</span>
-    <a href="https://cciaf.minhaaj.com" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:600;">cciaf.minhaaj.com</a>
-  </footer>
+<footer class="site-footer" role="contentinfo">
+  <div class="sf-grid">
+    <div class="sf-col">
+      <h4>28 Lunar Mansions</h4>
+      <p class="sf-body">A moon election calendar based on Abu Ma'shar's 28 Mansions framework. Part of the CCIAF Layer III — Action tools for timing and electional guidance.</p>
+      <p class="sf-sub">Part of <a href="https://cciaf.minhaaj.com" target="_blank" rel="noopener">cciaf.minhaaj.com</a> · <a href="https://www.minhaaj.com" target="_blank" rel="noopener">minhaaj.com</a></p>
+    </div>
+    <div class="sf-col">
+      <h4>CCIAF</h4>
+      <ul>
+        <li><a href="https://cciaf.minhaaj.com" target="_blank" rel="noopener">The Framework</a></li>
+        <li><a href="https://cciaf.minhaaj.com/#framework" target="_blank" rel="noopener">Five Layers</a></li>
+        <li><a href="https://cciaf.minhaaj.com/#engage" target="_blank" rel="noopener">Engagement Tiers</a></li>
+        <li><a href="https://cciaf.minhaaj.com/#contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+    <div class="sf-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="mailto:contact@psyda.org">contact@psyda.org</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sf-bottom">
+    <span>© 2026 CCIAF &nbsp;·&nbsp; Minhaaj Rehman &nbsp;·&nbsp; All rights reserved</span>
+    <p class="sf-disc">CCIAF is a structured interpretive framework drawing on multiple intellectual traditions. It is decision-support, not prediction. It does not constitute medical, psychiatric, legal, or financial advice. Users in distress should consult qualified professionals.</p>
+  </div>
+</footer>
 
-<button id="topBtn" type="button" onclick="scrollToTop()" aria-label="Scroll to top">↑ Top</button>
+<button class="st" id="topBtn" onclick="scrollToTop()" aria-label="Scroll to top">↑</button>
+
 <script>
+/* ─── DATA ──────────────────────────────────────────────────── */
 const MANSIONS = [
-  {
-    "name": "Al-Sharatain",
-    "deg": "Aries 0°–12°51'",
-    "letter": "ا",
-    "letterLatin": "Alif",
-    "divineName": "Al-Badi",
-    "divineTranslation": "The Initiating",
-    "cosmology": "First Intellect · The Pen",
-    "star": "Sheratan β Ari, Mesarthim γ Ari",
-    "starClass": "",
-    "nature": "mixed",
-    "rating": "caution",
-    "ratingLabel": "Caution",
-    "num": 1
-  },
-  {
-    "name": "Al-Butain",
-    "deg": "Aries 12°51'–25°42'",
-    "letter": "ب",
-    "letterLatin": "Ba",
-    "divineName": "Al-Ba'ith",
-    "divineTranslation": "He who raises up — The Sender",
-    "cosmology": "Protected Tablet · Universal Soul",
-    "star": "Botein δ Ari",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "good",
-    "ratingLabel": "Good",
-    "num": 2
-  },
-  {
-    "name": "Al-Thurayya",
-    "deg": "Aries 25°42'–Taurus 8°34'",
-    "letter": "ج",
-    "letterLatin": "Jim",
-    "divineName": "Al-Batin",
-    "divineTranslation": "The Hidden — The Inward",
-    "cosmology": "Universal Nature",
-    "star": "Pleiades η Tau",
-    "starClass": "benefic",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 3
-  },
-  {
-    "name": "Al-Dabaran",
-    "deg": "Taurus 8°34'–21°25'",
-    "letter": "د",
-    "letterLatin": "Dal",
-    "divineName": "Al-Akhir",
-    "divineTranslation": "The Last",
-    "cosmology": "Universal Substance · Prima Materia",
-    "star": "Aldebaran α Tau",
-    "starClass": "royal",
-    "nature": "worst",
-    "rating": "veto",
-    "ratingLabel": "ABSOLUTE VETO",
-    "num": 4
-  },
-  {
-    "name": "Al-Hak'ah",
-    "deg": "Taurus 21°25'–Gemini 4°17'",
-    "letter": "ه",
-    "letterLatin": "Ha",
-    "divineName": "Al-Zahir",
-    "divineTranslation": "The Manifest — The Outward",
-    "cosmology": "Universal Body · All corporeal and imaginal forms",
-    "star": "Meissa λ Ori, Heka",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "good",
-    "ratingLabel": "Good",
-    "num": 5
-  },
-  {
-    "name": "Al-Han'ah",
-    "deg": "Gemini 4°17'–17°8'",
-    "letter": "و",
-    "letterLatin": "Waw",
-    "divineName": "Al-Hakim",
-    "divineTranslation": "The Wise — Discriminating Wisdom",
-    "cosmology": "The power of shape and form",
-    "star": "Alhena γ Gem, Tejat",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 6
-  },
-  {
-    "name": "Al-Dhira'",
-    "deg": "Gemini 17°8'–Cancer 0°",
-    "letter": "ز",
-    "letterLatin": "Zayn",
-    "divineName": "Al-Muhit",
-    "divineTranslation": "The All-Encompassing",
-    "cosmology": "The Throne · All-encompassing Mercy",
-    "star": "Pollux β Gem, Castor α Gem",
-    "starClass": "benefic",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 7
-  },
-  {
-    "name": "Al-Nathrah",
-    "deg": "Cancer 0°–12°51'",
-    "letter": "ح",
-    "letterLatin": "Ḥa",
-    "divineName": "Al-Shakur",
-    "divineTranslation": "The Grateful",
-    "cosmology": "The Footstool (Kursi) · First imaginal station",
-    "star": "Praesepe M44 (Beehive)",
-    "starClass": "benefic",
-    "nature": "benef",
-    "rating": "highest",
-    "ratingLabel": "HIGHEST ✦✦✦",
-    "num": 8
-  },
-  {
-    "name": "Al-Tarf",
-    "deg": "Cancer 12°51'–25°42'",
-    "letter": "ط",
-    "letterLatin": "Ṭa",
-    "divineName": "Al-Ghani",
-    "divineTranslation": "The Independent — The Rich",
-    "cosmology": "Black satin sphere · Starless outer sphere · Zodiacal towers",
-    "star": "Asellus Borealis & Australis",
-    "starClass": "",
-    "nature": "malef",
-    "rating": "avoid",
-    "ratingLabel": "Avoid",
-    "num": 9
-  },
-  {
-    "name": "Al-Jabhah",
-    "deg": "Cancer 25°42'–Leo 8°34'",
-    "letter": "ي",
-    "letterLatin": "Ya",
-    "divineName": "Al-Muqtadir",
-    "divineTranslation": "The All-Powerful",
-    "cosmology": "Sphere of Fixed Stars · Station of the 28 mansions",
-    "star": "Regulus α Leo",
-    "starClass": "royal",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 10
-  },
-  {
-    "name": "Al-Zubrah",
-    "deg": "Leo 8°34'–21°25'",
-    "letter": "ك",
-    "letterLatin": "Kaf",
-    "divineName": "Al-Rabb",
-    "divineTranslation": "The Lord",
-    "cosmology": "First Heaven · Sphere of Saturn · Prophet Abraham",
-    "star": "Zosma δ Leo, Chertan θ Leo",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "highest",
-    "ratingLabel": "HIGHEST ✦✦✦",
-    "num": 11
-  },
-  {
-    "name": "Al-Sarfah",
-    "deg": "Leo 21°25'–Virgo 4°17'",
-    "letter": "ل",
-    "letterLatin": "Lam",
-    "divineName": "Al-'Alim",
-    "divineTranslation": "The All-Knowing",
-    "cosmology": "Second Heaven · Sphere of Jupiter · Prophet Moses",
-    "star": "Denebola β Leo",
-    "starClass": "",
-    "nature": "malef",
-    "rating": "avoid",
-    "ratingLabel": "Avoid",
-    "num": 12
-  },
-  {
-    "name": "Al-Awwa",
-    "deg": "Virgo 4°17'–17°8'",
-    "letter": "م",
-    "letterLatin": "Mim",
-    "divineName": "Al-Qahhar",
-    "divineTranslation": "The Subduer — The Victorious",
-    "cosmology": "Third Heaven · Sphere of Mars · Prophet Aaron",
-    "star": "Porrima γ Vir, Vindemiatrix",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 13
-  },
-  {
-    "name": "Al-Simak",
-    "deg": "Virgo 17°8'–30°",
-    "letter": "ن",
-    "letterLatin": "Nun",
-    "divineName": "Al-Nur",
-    "divineTranslation": "The Light",
-    "cosmology": "Fourth Heaven · Sphere of the Sun · Prophet Idris (Enoch)",
-    "star": "Spica α Vir",
-    "starClass": "benefic",
-    "nature": "benef",
-    "rating": "highest",
-    "ratingLabel": "HIGHEST ✦✦✦",
-    "num": 14
-  },
-  {
-    "name": "Al-Ghafr",
-    "deg": "Libra 0°–12°51'",
-    "letter": "س",
-    "letterLatin": "Sin",
-    "divineName": "Al-Musawwir",
-    "divineTranslation": "The Form-Giver",
-    "cosmology": "Fifth Heaven · Sphere of Venus · Prophet Joseph",
-    "star": "Arcturus α Boo (nearby)",
-    "starClass": "benefic",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 15
-  },
-  {
-    "name": "Al-Zubana",
-    "deg": "Libra 12°51'–25°42'",
-    "letter": "ع",
-    "letterLatin": "'Ayn",
-    "divineName": "Al-Muhsi",
-    "divineTranslation": "The Enumerator",
-    "cosmology": "Sixth Heaven · Sphere of Mercury · Prophet Jesus",
-    "star": "Graffias β Sco, Dschubba δ Sco",
-    "starClass": "",
-    "nature": "malef",
-    "rating": "avoid",
-    "ratingLabel": "Avoid",
-    "num": 16
-  },
-  {
-    "name": "Al-Iklil",
-    "deg": "Libra 25°42'–Scorpio 8°34'",
-    "letter": "ف",
-    "letterLatin": "Fa",
-    "divineName": "Al-Mubin",
-    "divineTranslation": "The Clarifier — The Evident",
-    "cosmology": "Seventh Heaven (nearest) · Sphere of the Moon · Prophet Adam",
-    "star": "Acrab β Sco, Jabhat al-Akrab",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 17
-  },
-  {
-    "name": "Al-Qalb",
-    "deg": "Scorpio 8°34'–21°25'",
-    "letter": "ص",
-    "letterLatin": "Ṣad",
-    "divineName": "Al-Qabid",
-    "divineTranslation": "The Restrainer — The Seizer",
-    "cosmology": "Element Fire and Ether",
-    "star": "Antares α Sco",
-    "starClass": "malefic-star",
-    "nature": "worst",
-    "rating": "veto",
-    "ratingLabel": "ABSOLUTE VETO",
-    "num": 18
-  },
-  {
-    "name": "Al-Shaulah",
-    "deg": "Scorpio 21°25'–Sag 4°17'",
-    "letter": "ق",
-    "letterLatin": "Qaf",
-    "divineName": "Al-Hayy",
-    "divineTranslation": "The Living",
-    "cosmology": "Element Air",
-    "star": "Shaula λ Sco, Lesath υ Sco",
-    "starClass": "",
-    "nature": "malef",
-    "rating": "avoid",
-    "ratingLabel": "Avoid",
-    "num": 19
-  },
-  {
-    "name": "Al-Na'aim",
-    "deg": "Sag 4°17'–17°8'",
-    "letter": "ر",
-    "letterLatin": "Ra",
-    "divineName": "Al-Muhyi",
-    "divineTranslation": "The Life-Giver",
-    "cosmology": "Element Water",
-    "star": "Nunki σ Sgr, Ascella ζ Sgr",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "good",
-    "ratingLabel": "Good",
-    "num": 20
-  },
-  {
-    "name": "Al-Baldah",
-    "deg": "Sag 17°8'–30°",
-    "letter": "ش",
-    "letterLatin": "Shin",
-    "divineName": "Al-Mumit",
-    "divineTranslation": "The Death-Giver",
-    "cosmology": "Element Earth",
-    "star": "(Empty region of sky)",
-    "starClass": "void",
-    "nature": "mixed",
-    "rating": "caution",
-    "ratingLabel": "Caution",
-    "num": 21
-  },
-  {
-    "name": "Sa'd al-Dhabih",
-    "deg": "Cap 0°–12°51'",
-    "letter": "ت",
-    "letterLatin": "Ta",
-    "divineName": "Al-'Aziz",
-    "divineTranslation": "The Precious — The Inaccessible",
-    "cosmology": "Minerals and metals · Exalted primary crystal order",
-    "star": "Algedi α Cap, Dabih β Cap",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 22
-  },
-  {
-    "name": "Sa'd Bula'",
-    "deg": "Cap 12°51'–25°42'",
-    "letter": "ث",
-    "letterLatin": "Tha",
-    "divineName": "Al-Razzaq",
-    "divineTranslation": "The Nourisher — The Sustainer",
-    "cosmology": "Plant kingdom",
-    "star": "Nashira γ Cap, Deneb Algedi δ Cap",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 23
-  },
-  {
-    "name": "Sa'd al-Su'ud",
-    "deg": "Cap 25°42'–Aqu 8°34'",
-    "letter": "خ",
-    "letterLatin": "Kha",
-    "divineName": "Al-Mudhill",
-    "divineTranslation": "The Humbler",
-    "cosmology": "Animal kingdom",
-    "star": "Sadalsuud β Aqr",
-    "starClass": "benefic",
-    "nature": "benef",
-    "rating": "good",
-    "ratingLabel": "Good",
-    "num": 24
-  },
-  {
-    "name": "Sa'd al-Akhbiyah",
-    "deg": "Aqu 8°34'–21°25'",
-    "letter": "ذ",
-    "letterLatin": "Dhal",
-    "divineName": "Al-Qawiyy",
-    "divineTranslation": "The Powerful — Inner Strength",
-    "cosmology": "The Angels · Strength from emptiness of self",
-    "star": "Sadalmelik α Aqr, Sadachbia γ Aqr",
-    "starClass": "",
-    "nature": "mixed",
-    "rating": "caution",
-    "ratingLabel": "Caution",
-    "num": 25
-  },
-  {
-    "name": "Al-Fargh al-Awwal",
-    "deg": "Aqu 21°25'–Pis 4°17'",
-    "letter": "ض",
-    "letterLatin": "Dad",
-    "divineName": "Al-Latif",
-    "divineTranslation": "The Subtle — Graciously Attenuating",
-    "cosmology": "The Jinn",
-    "star": "Markab α Peg, Scheat β Peg",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 26
-  },
-  {
-    "name": "Al-Fargh al-Thani",
-    "deg": "Pis 4°17'–17°8'",
-    "letter": "ظ",
-    "letterLatin": "Dha",
-    "divineName": "Al-Jami'",
-    "divineTranslation": "The Gatherer — Inner Union",
-    "cosmology": "Humanity · Union of elemental quadrature and opposites",
-    "star": "Algenib γ Peg, Alpheratz α And",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "highest",
-    "ratingLabel": "HIGHEST ✦✦✦",
-    "num": 27
-  },
-  {
-    "name": "Al-Batn al-Hut",
-    "deg": "Pis 17°8'–30°",
-    "letter": "غ",
-    "letterLatin": "Ghayn",
-    "divineName": "Rafi' al-Darajat",
-    "divineTranslation": "The Elevating of Degrees",
-    "cosmology": "The Complete Human Being · Freedom through all healing",
-    "star": "Mirach β And, Alrescha α Psc",
-    "starClass": "",
-    "nature": "benef",
-    "rating": "prime",
-    "ratingLabel": "Prime ✦✦",
-    "num": 28
-  }
+  { name:"Al-Sharatain",    deg:"Aries 0°–12°51'",          letter:"ا", letterLatin:"Alif", divineName:"Al-Badi",          divineTranslation:"The Initiating",                        cosmology:"First Intellect · The Pen",                                            star:"Sheratan β Ari, Mesarthim γ Ari", starClass:"",            nature:"mixed",  rating:"caution", ratingLabel:"Caution",        num:1  },
+  { name:"Al-Butain",       deg:"Aries 12°51'–25°42'",      letter:"ب", letterLatin:"Ba",   divineName:"Al-Ba'ith",        divineTranslation:"He who raises up — The Sender",         cosmology:"Protected Tablet · Universal Soul",                                    star:"Botein δ Ari",                    starClass:"",            nature:"benef",  rating:"good",    ratingLabel:"Good",           num:2  },
+  { name:"Al-Thurayya",     deg:"Aries 25°42'–Taurus 8°34'",letter:"ج", letterLatin:"Jim",  divineName:"Al-Batin",         divineTranslation:"The Hidden — The Inward",               cosmology:"Universal Nature",                                                     star:"Pleiades η Tau",                  starClass:"benefic",     nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:3  },
+  { name:"Al-Dabaran",      deg:"Taurus 8°34'–21°25'",      letter:"د", letterLatin:"Dal",  divineName:"Al-Akhir",         divineTranslation:"The Last",                              cosmology:"Universal Substance · Prima Materia",                                  star:"Aldebaran α Tau",                 starClass:"royal",       nature:"worst",  rating:"veto",    ratingLabel:"Absolute Veto",  num:4  },
+  { name:"Al-Hak'ah",       deg:"Taurus 21°25'–Gemini 4°17'",letter:"ه",letterLatin:"Ha",   divineName:"Al-Zahir",         divineTranslation:"The Manifest — The Outward",            cosmology:"Universal Body · All corporeal and imaginal forms",                    star:"Meissa λ Ori, Heka",              starClass:"",            nature:"benef",  rating:"good",    ratingLabel:"Good",           num:5  },
+  { name:"Al-Han'ah",       deg:"Gemini 4°17'–17°8'",       letter:"و", letterLatin:"Waw",  divineName:"Al-Hakim",         divineTranslation:"The Wise — Discriminating Wisdom",      cosmology:"The power of shape and form",                                          star:"Alhena γ Gem, Tejat",             starClass:"",            nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:6  },
+  { name:"Al-Dhira'",       deg:"Gemini 17°8'–Cancer 0°",   letter:"ز", letterLatin:"Zayn", divineName:"Al-Muhit",         divineTranslation:"The All-Encompassing",                  cosmology:"The Throne · All-encompassing Mercy",                                  star:"Pollux β Gem, Castor α Gem",      starClass:"benefic",     nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:7  },
+  { name:"Al-Nathrah",      deg:"Cancer 0°–12°51'",         letter:"ح", letterLatin:"Ḥa",   divineName:"Al-Shakur",        divineTranslation:"The Grateful",                          cosmology:"The Footstool (Kursi) · First imaginal station",                       star:"Praesepe M44 (Beehive)",          starClass:"benefic",     nature:"benef",  rating:"highest", ratingLabel:"Highest ✦✦✦",    num:8  },
+  { name:"Al-Tarf",         deg:"Cancer 12°51'–25°42'",     letter:"ط", letterLatin:"Ṭa",   divineName:"Al-Ghani",         divineTranslation:"The Independent — The Rich",            cosmology:"Black satin sphere · Starless outer sphere · Zodiacal towers",          star:"Asellus Borealis & Australis",    starClass:"",            nature:"malef",  rating:"avoid",   ratingLabel:"Avoid",          num:9  },
+  { name:"Al-Jabhah",       deg:"Cancer 25°42'–Leo 8°34'",  letter:"ي", letterLatin:"Ya",   divineName:"Al-Muqtadir",      divineTranslation:"The All-Powerful",                      cosmology:"Sphere of Fixed Stars · Station of the 28 mansions",                   star:"Regulus α Leo",                   starClass:"royal",       nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:10 },
+  { name:"Al-Zubrah",       deg:"Leo 8°34'–21°25'",         letter:"ك", letterLatin:"Kaf",  divineName:"Al-Rabb",          divineTranslation:"The Lord",                              cosmology:"First Heaven · Sphere of Saturn · Prophet Abraham",                    star:"Zosma δ Leo, Chertan θ Leo",      starClass:"",            nature:"benef",  rating:"highest", ratingLabel:"Highest ✦✦✦",    num:11 },
+  { name:"Al-Sarfah",       deg:"Leo 21°25'–Virgo 4°17'",   letter:"ل", letterLatin:"Lam",  divineName:"Al-'Alim",         divineTranslation:"The All-Knowing",                       cosmology:"Second Heaven · Sphere of Jupiter · Prophet Moses",                    star:"Denebola β Leo",                  starClass:"",            nature:"malef",  rating:"avoid",   ratingLabel:"Avoid",          num:12 },
+  { name:"Al-Awwa",         deg:"Virgo 4°17'–17°8'",        letter:"م", letterLatin:"Mim",  divineName:"Al-Qahhar",        divineTranslation:"The Subduer — The Victorious",          cosmology:"Third Heaven · Sphere of Mars · Prophet Aaron",                        star:"Porrima γ Vir, Vindemiatrix",     starClass:"",            nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:13 },
+  { name:"Al-Simak",        deg:"Virgo 17°8'–30°",          letter:"ن", letterLatin:"Nun",  divineName:"Al-Nur",           divineTranslation:"The Light",                             cosmology:"Fourth Heaven · Sphere of the Sun · Prophet Idris (Enoch)",            star:"Spica α Vir",                     starClass:"benefic",     nature:"benef",  rating:"highest", ratingLabel:"Highest ✦✦✦",    num:14 },
+  { name:"Al-Ghafr",        deg:"Libra 0°–12°51'",          letter:"س", letterLatin:"Sin",  divineName:"Al-Musawwir",      divineTranslation:"The Form-Giver",                        cosmology:"Fifth Heaven · Sphere of Venus · Prophet Joseph",                      star:"Arcturus α Boo (nearby)",         starClass:"benefic",     nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:15 },
+  { name:"Al-Zubana",       deg:"Libra 12°51'–25°42'",      letter:"ع", letterLatin:"'Ayn", divineName:"Al-Muhsi",         divineTranslation:"The Enumerator",                        cosmology:"Sixth Heaven · Sphere of Mercury · Prophet Jesus",                     star:"Graffias β Sco, Dschubba δ Sco",  starClass:"",            nature:"malef",  rating:"avoid",   ratingLabel:"Avoid",          num:16 },
+  { name:"Al-Iklil",        deg:"Libra 25°42'–Scorpio 8°34'",letter:"ف",letterLatin:"Fa",   divineName:"Al-Mubin",         divineTranslation:"The Clarifier — The Evident",           cosmology:"Seventh Heaven (nearest) · Sphere of the Moon · Prophet Adam",         star:"Acrab β Sco, Jabhat al-Akrab",    starClass:"",            nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:17 },
+  { name:"Al-Qalb",         deg:"Scorpio 8°34'–21°25'",     letter:"ص", letterLatin:"Ṣad",  divineName:"Al-Qabid",         divineTranslation:"The Restrainer — The Seizer",           cosmology:"Element Fire and Ether",                                               star:"Antares α Sco",                   starClass:"malefic-star",nature:"worst",  rating:"veto",    ratingLabel:"Absolute Veto",  num:18 },
+  { name:"Al-Shaulah",      deg:"Scorpio 21°25'–Sag 4°17'", letter:"ق", letterLatin:"Qaf",  divineName:"Al-Hayy",          divineTranslation:"The Living",                            cosmology:"Element Air",                                                          star:"Shaula λ Sco, Lesath υ Sco",      starClass:"",            nature:"malef",  rating:"avoid",   ratingLabel:"Avoid",          num:19 },
+  { name:"Al-Na'aim",       deg:"Sag 4°17'–17°8'",          letter:"ر", letterLatin:"Ra",   divineName:"Al-Muhyi",         divineTranslation:"The Life-Giver",                        cosmology:"Element Water",                                                        star:"Nunki σ Sgr, Ascella ζ Sgr",      starClass:"",            nature:"benef",  rating:"good",    ratingLabel:"Good",           num:20 },
+  { name:"Al-Baldah",       deg:"Sag 17°8'–30°",            letter:"ش", letterLatin:"Shin", divineName:"Al-Mumit",         divineTranslation:"The Death-Giver",                       cosmology:"Element Earth",                                                        star:"(Empty region of sky)",           starClass:"void",        nature:"mixed",  rating:"caution", ratingLabel:"Caution",        num:21 },
+  { name:"Sa'd al-Dhabih",  deg:"Cap 0°–12°51'",            letter:"ت", letterLatin:"Ta",   divineName:"Al-'Aziz",         divineTranslation:"The Precious — The Inaccessible",       cosmology:"Minerals and metals · Exalted primary crystal order",                  star:"Algedi α Cap, Dabih β Cap",       starClass:"",            nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:22 },
+  { name:"Sa'd Bula'",      deg:"Cap 12°51'–25°42'",        letter:"ث", letterLatin:"Tha",  divineName:"Al-Razzaq",        divineTranslation:"The Nourisher — The Sustainer",         cosmology:"Plant kingdom",                                                        star:"Nashira γ Cap, Deneb Algedi δ Cap",starClass:"",            nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:23 },
+  { name:"Sa'd al-Su'ud",   deg:"Cap 25°42'–Aqu 8°34'",    letter:"خ", letterLatin:"Kha",  divineName:"Al-Mudhill",       divineTranslation:"The Humbler",                           cosmology:"Animal kingdom",                                                       star:"Sadalsuud β Aqr",                 starClass:"benefic",     nature:"benef",  rating:"good",    ratingLabel:"Good",           num:24 },
+  { name:"Sa'd al-Akhbiyah",deg:"Aqu 8°34'–21°25'",        letter:"ذ", letterLatin:"Dhal", divineName:"Al-Qawiyy",        divineTranslation:"The Powerful — Inner Strength",         cosmology:"The Angels · Strength from emptiness of self",                         star:"Sadalmelik α Aqr, Sadachbia γ Aqr",starClass:"",           nature:"mixed",  rating:"caution", ratingLabel:"Caution",        num:25 },
+  { name:"Al-Fargh al-Awwal",deg:"Aqu 21°25'–Pis 4°17'",   letter:"ض", letterLatin:"Dad",  divineName:"Al-Latif",         divineTranslation:"The Subtle — Graciously Attenuating",   cosmology:"The Jinn",                                                             star:"Markab α Peg, Scheat β Peg",      starClass:"",            nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:26 },
+  { name:"Al-Fargh al-Thani",deg:"Pis 4°17'–17°8'",        letter:"ظ", letterLatin:"Dha",  divineName:"Al-Jami'",         divineTranslation:"The Gatherer — Inner Union",            cosmology:"Humanity · Union of elemental quadrature and opposites",               star:"Algenib γ Peg, Alpheratz α And",  starClass:"",            nature:"benef",  rating:"highest", ratingLabel:"Highest ✦✦✦",    num:27 },
+  { name:"Al-Batn al-Hut",  deg:"Pis 17°8'–30°",           letter:"غ", letterLatin:"Ghayn",divineName:"Rafi' al-Darajat", divineTranslation:"The Elevating of Degrees",              cosmology:"The Complete Human Being · Freedom through all healing",               star:"Mirach β And, Alrescha α Psc",    starClass:"",            nature:"benef",  rating:"prime",   ratingLabel:"Prime ✦✦",       num:28 }
 ];
 
+/* ─── STATE ─────────────────────────────────────────────────── */
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
 const START = new Date();
 const START_YEAR = START.getFullYear();
 const START_MONTH = START.getMonth() + 1;
-const MIN_INDEX = 0;
-const MAX_INDEX = 23;
-let monthIndex = 0;
-let activeFilter = 'all';
-let mansionDates = {};
+const MIN_INDEX = 0, MAX_INDEX = 23;
+let monthIndex = 0, activeFilter = 'all', mansionDates = {};
 
+/* ─── THEME ─────────────────────────────────────────────────── */
+function initTheme() {
+  const saved = localStorage.getItem('28-lunar-mansions-theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = cur === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('28-lunar-mansions-theme', next);
+}
+
+/* ─── ASTRONOMY ─────────────────────────────────────────────── */
 function toJD(year, month, day, hour) {
   if (month <= 2) { year -= 1; month += 12; }
   const A = Math.floor(year / 100);
   const B = 2 - A + Math.floor(A / 4);
   return Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) + day + (hour/24) + B - 1524.5;
 }
-
 function moonLon(jd) {
   const d = jd - 2451545.0, r = Math.PI/180;
   const L  = ((218.316  + 13.176396*d)%360+360)%360;
@@ -955,7 +573,6 @@ function moonLon(jd) {
     + 0.059*Math.sin((2*D-2*M)*r) + 0.057*Math.sin((2*D-Ms-M)*r);
   return ((lon%360)+360)%360;
 }
-
 function sunLon(jd) {
   const d = jd - 2451545.0, T = d/36525, r = Math.PI/180;
   const L0 = ((280.46646 + 36000.76983*T)%360+360)%360;
@@ -965,183 +582,141 @@ function sunLon(jd) {
           + 0.000289*Math.sin(3*M*r);
   return ((L0+C)%360+360)%360;
 }
-
 function moonPhase(jd) {
-  const ml = moonLon(jd), sl = sunLon(jd);
-  const angle = ((ml - sl)%360+360)%360;
+  const angle = ((moonLon(jd) - sunLon(jd))%360+360)%360;
   const waxing = angle < 180;
   let icon, label;
-  if (angle < 22.5) { icon='🌑'; label='New Moon'; }
-  else if (angle < 67.5) { icon='🌒'; label='Crescent'; }
+  if      (angle < 22.5)  { icon='🌑'; label='New Moon'; }
+  else if (angle < 67.5)  { icon='🌒'; label='Crescent'; }
   else if (angle < 112.5) { icon='🌓'; label='First Quarter'; }
   else if (angle < 157.5) { icon='🌔'; label='Waxing Gibbous'; }
   else if (angle < 202.5) { icon='🌕'; label='Full Moon'; }
   else if (angle < 247.5) { icon='🌖'; label='Waning Gibbous'; }
   else if (angle < 292.5) { icon='🌗'; label='Last Quarter'; }
   else if (angle < 337.5) { icon='🌘'; label='Balsamic'; }
-  else { icon='🌑'; label='Dark Moon'; }
+  else                    { icon='🌑'; label='Dark Moon'; }
   return { icon, label, waxing };
 }
-
 function lonToMansion(lon) { return (Math.floor(lon/(360/28))%28)+1; }
-
 function mansionDatesForMonth(year, month) {
   const days = new Date(year, month, 0).getDate();
   const map = {};
   for (let day = 1; day <= days; day++) {
     for (let h = 0; h < 24; h += 2) {
-      const jd = toJD(year, month, day, h);
-      const num = lonToMansion(moonLon(jd));
+      const num = lonToMansion(moonLon(toJD(year, month, day, h)));
       if (!map[num]) map[num] = new Set();
       map[num].add(day);
     }
   }
   const out = {};
-  for (const [k, v] of Object.entries(map)) out[k] = [...v].sort((a,b) => a-b);
+  for (const [k,v] of Object.entries(map)) out[k] = [...v].sort((a,b)=>a-b);
   return out;
 }
 
+/* ─── HELPERS ───────────────────────────────────────────────── */
 function formatDays(days) {
   if (!days || !days.length) return null;
   const parts = [];
   let start = days[0], prev = days[0];
   for (let i = 1; i < days.length; i++) {
-    if (days[i] === prev + 1) {
-      prev = days[i];
-    } else {
-      parts.push(start === prev ? `${start}` : `${start}–${prev}`);
-      start = prev = days[i];
-    }
+    if (days[i] === prev+1) { prev = days[i]; }
+    else { parts.push(start===prev ? `${start}` : `${start}–${prev}`); start = prev = days[i]; }
   }
-  parts.push(start === prev ? `${start}` : `${start}–${prev}`);
+  parts.push(start===prev ? `${start}` : `${start}–${prev}`);
   return parts.join(', ');
 }
-
 function phaseForDays(year, month, days) {
   if (!days || !days.length) return null;
-  const midDay = days[Math.floor(days.length / 2)];
-  return moonPhase(toJD(year, month, midDay, 12));
+  return moonPhase(toJD(year, month, days[Math.floor(days.length/2)], 12));
 }
-
-function natureBadge(nature) {
-  return {
-    benef: ['b-benef', 'Beneficial'],
-    mixed: ['b-mixed', 'Mixed'],
-    malef: ['b-malef', 'Malefic'],
-    worst: ['b-worst', 'Most malefic']
-  }[nature] || ['b-benef', 'Beneficial'];
-}
-
-function ratingClass(rating) {
-  return {
-    highest: 'r-highest',
-    prime: 'r-prime',
-    good: 'r-good',
-    caution: 'r-caution',
-    avoid: 'r-avoid',
-    veto: 'r-veto'
-  }[rating] || 'r-good';
-}
-
-function buildStats() {
-  const counts = {
-    highest: MANSIONS.filter(m => m.rating === 'highest').length,
-    prime: MANSIONS.filter(m => m.rating === 'prime').length,
-    good: MANSIONS.filter(m => m.rating === 'good').length,
-    caution: MANSIONS.filter(m => m.rating === 'caution').length,
-    avoid: MANSIONS.filter(m => m.rating === 'avoid').length,
-    veto: MANSIONS.filter(m => m.rating === 'veto').length,
+function natureHtml(nature) {
+  const map = {
+    benef: ['nature-benef','Beneficial'],
+    mixed: ['nature-mixed','Mixed'],
+    malef: ['nature-malef','Malefic'],
+    worst: ['nature-worst','Most malefic']
   };
-  const stats = [
-    ['Prime / Safe', counts.highest + counts.prime + counts.good, 'sv-safe'],
-    ['Avoid', counts.avoid, 'sv-avoid'],
-    ['Caution', counts.caution, 'sv-caution'],
-    ['Absolute veto', counts.veto, 'sv-veto'],
-  ];
-  const wrap = document.getElementById('stats-grid');
-  wrap.innerHTML = stats.map(([label, value, cls]) => `
-    <div class="stat-card"><div class="stat-label">${label}</div><div class="stat-val ${cls}">${value}</div></div>
-  `).join('');
+  const [cls,label] = map[nature] || map.benef;
+  return `<span class="nature-label ${cls}">${label}</span>`;
+}
+function ratingClass(rating) {
+  return { highest:'r-highest', prime:'r-prime', good:'r-good', caution:'r-caution', avoid:'r-avoid', veto:'r-veto' }[rating] || 'r-good';
 }
 
+/* ─── STATS ─────────────────────────────────────────────────── */
+function buildStats() {
+  const c = { highest:0, prime:0, good:0, caution:0, avoid:0, veto:0 };
+  MANSIONS.forEach(m => c[m.rating]++);
+  const stats = [
+    ['Prime / Safe', c.highest+c.prime+c.good, 'gold'],
+    ['Caution',      c.caution,                ''],
+    ['Avoid',        c.avoid,                  ''],
+    ['Absolute veto',c.veto,                   ''],
+  ];
+  document.getElementById('stats-grid').innerHTML = stats.map(([label,value,cls])=>`
+    <div class="stat-card">
+      <div class="stat-label">${label}</div>
+      <div class="stat-val ${cls}">${value}</div>
+    </div>`).join('');
+}
+
+/* ─── MONTH ─────────────────────────────────────────────────── */
 function updateMonthLabel() {
   const curMonth = START_MONTH + monthIndex;
-  const year = START_YEAR + Math.floor((curMonth - 1) / 12);
-  const month = ((curMonth - 1) % 12) + 1;
-  document.getElementById('month-label').textContent = `${MONTH_NAMES[month - 1]} ${year}`;
+  const year = START_YEAR + Math.floor((curMonth-1)/12);
+  const month = ((curMonth-1)%12)+1;
+  document.getElementById('month-label').textContent = `${MONTH_NAMES[month-1]} ${year}`;
   document.getElementById('prev-btn').disabled = monthIndex <= MIN_INDEX;
   document.getElementById('next-btn').disabled = monthIndex >= MAX_INDEX;
   return { year, month };
 }
-
 function buildDates() {
   const { year, month } = updateMonthLabel();
   mansionDates = mansionDatesForMonth(year, month);
 }
 
+/* ─── RENDER ────────────────────────────────────────────────── */
 function render() {
   const { year, month } = updateMonthLabel();
   const q = document.getElementById('search').value.toLowerCase().trim();
-  const tbody = document.getElementById('tbody');
-
   const rows = MANSIONS.filter(m => {
     const filterOk =
       activeFilter === 'all' ||
       (activeFilter === 'highest' && m.rating === 'highest') ||
-      (activeFilter === 'prime' && (m.rating === 'prime' || m.rating === 'highest')) ||
-      (activeFilter === 'good' && m.rating === 'good') ||
+      (activeFilter === 'prime'   && (m.rating === 'prime' || m.rating === 'highest')) ||
+      (activeFilter === 'good'    && m.rating === 'good') ||
       (activeFilter === 'caution' && m.rating === 'caution') ||
-      (activeFilter === 'avoid' && m.rating === 'avoid') ||
-      (activeFilter === 'veto' && m.rating === 'veto');
-
+      (activeFilter === 'avoid'   && m.rating === 'avoid') ||
+      (activeFilter === 'veto'    && m.rating === 'veto');
     const searchOk = !q ||
-      m.name.toLowerCase().includes(q) ||
-      m.deg.toLowerCase().includes(q) ||
-      m.divineName.toLowerCase().includes(q) ||
-      m.divineTranslation.toLowerCase().includes(q) ||
-      m.cosmology.toLowerCase().includes(q) ||
-      m.star.toLowerCase().includes(q) ||
-      m.letterLatin.toLowerCase().includes(q) ||
-      String(m.num) === q;
-
+      m.name.toLowerCase().includes(q) || m.deg.toLowerCase().includes(q) ||
+      m.divineName.toLowerCase().includes(q) || m.divineTranslation.toLowerCase().includes(q) ||
+      m.cosmology.toLowerCase().includes(q) || m.star.toLowerCase().includes(q) ||
+      m.letterLatin.toLowerCase().includes(q) || String(m.num) === q;
     return filterOk && searchOk;
   });
 
   document.getElementById('count-label').textContent =
     rows.length === 28 ? 'Showing all 28 mansions' : `Showing ${rows.length} of 28`;
 
-  const mShort = MONTH_SHORT[month - 1];
-  tbody.innerHTML = rows.map(m => {
+  const mShort = MONTH_SHORT[month-1];
+  document.getElementById('tbody').innerHTML = rows.map(m => {
     const days = mansionDates[m.num];
     const dStr = formatDays(days);
     const phase = days ? phaseForDays(year, month, days) : null;
-    const [badgeClass, badgeLabel] = natureBadge(m.nature);
     const rClass = ratingClass(m.rating);
-
     const starClass = m.starClass || '';
-    const starTitle = {
-      royal: 'Royal Star',
-      benefic: 'Benefic Star',
-      'malefic-star': 'Malefic Star',
-      void: 'Void region'
-    }[starClass] || '';
-
+    const starTitle = { royal:'Royal Star', benefic:'Benefic Star', 'malefic-star':'Malefic Star', void:'Void region' }[starClass] || '';
     const phaseHtml = phase
       ? `<span class="phase-icon">${phase.icon}</span>
          <span class="phase-label">${phase.label}</span>
-         <span class="phase-dir" style="font-size:10px;color:${phase.waxing ? 'var(--c-prime)' : 'var(--c-caution)'}">${phase.waxing ? '↑ Waxing' : '↓ Waning'}</span>`
-      : '<span style="color:var(--text-3);font-size:11px;">—</span>';
-
-    const starHtml = `
-      <div class="star-row">
-        <span class="star-tag">${m.star}</span>
-        ${starTitle ? `<span class="star-tag ${starClass}">${starTitle}</span>` : ''}
-      </div>
-    `;
-
+         <span class="phase-dir">${phase.waxing ? '↑ Waxing' : '↓ Waning'}</span>`
+      : '<span style="color:var(--ink-4);font-size:11px;">—</span>';
     return `
-      <tr class="${m.rating === 'veto' ? 'row-veto' : ''}">
-        <td><div class="dates-cell">${dStr ? `<span class="dates-day">${dStr}</span><span class="dates-month">${mShort}</span>` : '<span class="dates-none">—</span>'}</div></td>
+      <tr class="${m.rating==='veto'?'row-veto':''}">
+        <td><div class="dates-cell">${dStr
+          ? `<span class="dates-day">${dStr}</span><span class="dates-month">${mShort}</span>`
+          : '<span class="dates-none">—</span>'}</div></td>
         <td>
           <div class="m-header"><span class="m-num">M${m.num}</span><span class="m-name">${m.name}</span></div>
           <div class="m-deg">${m.deg}</div>
@@ -1152,50 +727,45 @@ function render() {
               <span class="divine-name">${m.divineName} <span>· ${m.divineTranslation}</span></span>
             </div>
             <span class="divine-cosmology">↳ ${m.cosmology}</span>
-            ${starHtml}
+            <div class="star-row">
+              <span class="star-tag">${m.star}</span>
+              ${starTitle ? `<span class="star-tag ${starClass}">${starTitle}</span>` : ''}
+            </div>
           </div>
         </td>
-        <td><span class="badge ${badgeClass}">${badgeLabel}</span></td>
+        <td>${natureHtml(m.nature)}</td>
         <td><span class="rating ${rClass}">${m.ratingLabel}</span></td>
         <td><div class="phase-cell">${phaseHtml}</div></td>
-      </tr>
-    `;
+      </tr>`;
   }).join('');
 }
 
+/* ─── CONTROLS ──────────────────────────────────────────────── */
 function setFilter(type, btn) {
   activeFilter = type;
   document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
-
 function changeMonth(delta) {
   const next = monthIndex + delta;
   if (next < MIN_INDEX || next > MAX_INDEX) return;
   monthIndex = next;
-  buildDates();
-  render();
+  buildDates(); render();
 }
-
 function goToday() {
-  monthIndex = 0;
-  buildDates();
-  render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  monthIndex = 0; buildDates(); render();
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+function scrollToTop() { window.scrollTo({ top:0, behavior:'smooth' }); }
 
 window.addEventListener('scroll', () => {
   const btn = document.getElementById('topBtn');
-  if (!btn) return;
-  const show = window.scrollY > 180;
-  btn.style.display = show ? 'block' : 'none';
+  if (btn) btn.classList.toggle('on', window.scrollY > 180);
 });
 
+/* ─── INIT ──────────────────────────────────────────────────── */
+initTheme();
 buildStats();
 buildDates();
 render();
